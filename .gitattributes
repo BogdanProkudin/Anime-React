@@ -1,0 +1,8 @@
+backend/node_modules/puppeteer/.local-chromium/win64-982053/chrome-win/interactive_ui_tests.exe filter=lfs diff=lfs merge=lfs -text
+backend/node_modules/puppeteer/.local-chromium/win64-982053/chrome-win/chrome.dll filter=lfs diff=lfs merge=lfs -text
+. filter=lfs diff=lfs merge=lfs -text
+package.json filter=lfs diff=lfs merge=lfs -text
+package-lock.json filter=lfs diff=lfs merge=lfs -text
+backend filter=lfs diff=lfs merge=lfs -text
+frontend filter=lfs diff=lfs merge=lfs -text
+node_modules filter=lfs diff=lfs merge=lfs -text
