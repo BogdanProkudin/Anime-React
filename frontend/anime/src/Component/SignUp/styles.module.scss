@@ -2,13 +2,13 @@
 
 body,
 html {
-  overflow: hidden;
   touch-action: none;
 }
 .SignUpContainer {
   background-color: black;
   position: fixed;
   text-align: left;
+  overflow: hidden;
   display: flex;
   width: 100%;
   justify-content: space-evenly;

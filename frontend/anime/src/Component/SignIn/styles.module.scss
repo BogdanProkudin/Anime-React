@@ -4,13 +4,14 @@ body {
   margin: auto;
 
   font-family: 'Poppins', sans-serif;
-  overflow-y: hidden;
+
   touch-action: none;
 }
 
 .SignInContainer {
   text-align: left;
   display: flex;
+  overflow-y: hidden;
   justify-content: space-evenly;
 
   align-items: center;

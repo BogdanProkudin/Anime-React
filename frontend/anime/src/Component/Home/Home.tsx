@@ -1,15 +1,18 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import styles from './styles.module.scss';
+import React, { useRef, useEffect, useState } from 'react';
+import BigBanner from './BigBanner';
+import AnimeList from './AnimeList';
 
 const HomePage = () => {
-  const [animeList, setAnimeList] = useState([]);
+  const [animeList, setAnimeList] = useState<AnimeInfo[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://api.jikan.moe/v4/top/anime', {
+        const response = await axios.get('https://api.jikan.moe/v4/top/anime?filter=bypopularity', {
           params: {
-            page: 5,
+            page: 1,
             limit: 25,
           },
         });
@@ -24,14 +27,9 @@ const HomePage = () => {
     fetchData();
   }, []);
   return (
-    <div>
-      {' '}
-      <h1>Anime List123</h1>
-      <ul>
-        {animeList.map((anime: any) => (
-          <li>{anime.title}</li>
-        ))}
-      </ul>
+    <div className={styles.Home_Container}>
+      <BigBanner />
+      <AnimeList />
     </div>
   );
 };

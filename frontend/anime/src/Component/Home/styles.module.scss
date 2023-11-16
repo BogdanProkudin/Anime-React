@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Poppins:ital@1&display=swap');
+.Big_Banner {
+  width: 100%;
+
+  max-height: 80vh;
+  height: 80%;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.Big_Banner_Video {
+  width: 100%;
+
+  height: 100%;
+  object-fit: cover;
+  transition: all 1s ease;
+}
+.Big_Screeen_BannerBig {
+  max-height: 60rem;
+  height: 100%;
+}
+.big_banner_text_container {
+  position: relative;
+  bottom: 55%;
+  width: 500px;
+  left: 10%;
+}
+
+.big_banner_text_header_video {
+  color: white;
+  font-size: 4em; /* Размер шрифта */
+
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Тень текста */
+  margin-bottom: 20px; /* Пространство после заголовка */
+}
+.Home_Container {
+  background-color: black;
+  height: 100vh;
+}
+.big_banner_subtext_header_video {
+  font-size: 22px;
+  color: white;
+}
+.shadow {
+  background: #000;
+  background: linear-gradient(180deg, transparent, #040404 74%, #080808);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+.small_screen_title {
+  color: white;
+  font-size: 2.4em; /* Размер шрифта */
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Тень текста */
+}
+.home_page_trailer_info {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.separator {
+  color: #ddd;
+  padding: 0 10px;
+}
+.small_screen_info {
+  color: #eee;
+  font-size: 16px;
+  margin-top: 3px;
+  max-width: 70%;
+  text-align: center;
+}
+
+.BannerButton_Container {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+.Banner_Button {
+  border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Montserrat Subrayada', sans-serif;
+  font-family: 'Poppins', sans-serif;
+
+  font-size: 23px;
+  font-weight: 550;
+  height: 65px;
+  line-height: 20px;
+  list-style: none;
+  margin: 0;
+  outline: none;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  width: 187px;
+  transition: color 100ms;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.Anime_Item_Poster {
+  background: url('https://cdn.myanimelist.net/images/anime/10/47347l.jpg');
+  background-repeat: no-repeat;
+
+  width: 400px;
+  height: 350px;
+  border-radius: 40px;
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .big_banner_text_header_video {
+    font-size: 3rem;
+  }
+  .big_banner_subtext_header_video {
+    font-size: 18px;
+  }
+  .BannerButton_Container {
+    width: 350px;
+  }
+  .Banner_Button {
+    width: 157px;
+    height: 45px;
+    font-size: 18px;
+  }
+}

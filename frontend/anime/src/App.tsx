@@ -2,6 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import SignInPage from './Component/SignIn/SignIn';
 import SignUpPage from './Component/SignUp/SignUp';
 import HomePage from './Component/Home/Home';
+// import VideoPlayer from './Component/Home/VideoPayer';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -12,7 +13,7 @@ function App() {
     { path: '/LogIn', element: token ? <Navigate to="/Home" /> : <SignInPage /> },
     {
       path: '/Home',
-      element: token ? <HomePage /> : <Navigate to="/LogIn" />,
+      element: <HomePage />,
     },
   ];
   const routing = useRoutes(routes);

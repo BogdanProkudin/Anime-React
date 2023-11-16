@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import image from '../icons/958ed8fb87aae5e913bfbf144a6cb606.jpg';
+import image from '../icons/958ed8fb87aae5e913bfbf144a6cb606-removebg-preview.png';
 import SignInButton from './SignInButton';
 import SignInInput from './SignInInput';
 import WelcomeText from './SignInWelcomeText';
