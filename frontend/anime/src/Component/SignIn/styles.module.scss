@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap');
+
+body {
+  margin: auto;
+
+  font-family: 'Poppins', sans-serif;
+
+  touch-action: none;
+}
+
+.SignInContainer {
+  text-align: left;
+  display: flex;
+  overflow-y: hidden;
+  justify-content: space-evenly;
+
+  align-items: center;
+}
+.SignInItems {
+  display: flex;
+  flex-direction: column;
+  height: 60vh;
+  gap: 20px;
+}
+.SignInImage {
+  background-color: inherit;
+  height: 60.6rem;
+}
+
+.SignInWelcomeText {
+  color: #fff;
+
+  font-family: Poppins;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.SignInWelcomeSubText {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 40px;
+}
+
+.SignInInputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.SignInInput {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 260px;
+  padding-right: 30px;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid grey;
+}
+.SignInInputPassword {
+  color: grey;
+  position: relative;
+  right: 1rem;
+}
+
+.SignInButton {
+  color: #fff;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 12px;
+  background: #9c6fe4;
+  width: 300px;
+  height: 48px;
+  margin-top: 50px;
+  cursor: pointer;
+}
+.SignInNoAccount {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 100px;
+}
+
+@media (max-width: 1024px) {
+  .SignInImage {
+    display: none;
+  }
+  .SignInContainer {
+    margin-top: 100px;
+    overflow-y: hidden;
+  }
+  .SignInItems {
+    height: 100%;
+    justify-content: center;
+    overflow: hidden;
+  }
+}

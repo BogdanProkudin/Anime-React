@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap');
+
+body,
+html {
+  touch-action: none;
+}
+.SignUpContainer {
+  background-color: black;
+  position: fixed;
+  text-align: left;
+  overflow: hidden;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100vh;
+}
+.SignUpItems {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.SignUpWelcomeText {
+  color: #fff;
+
+  font-family: Poppins;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.SignUpInputContainer {
+  display: flex;
+}
+.SignUpInput {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 260px;
+  padding-right: 30px;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid grey;
+}
+.SignUpInputPassword {
+  color: grey;
+  position: relative;
+  right: 1rem;
+}
+.SignUpImage {
+  background-color: inherit;
+
+  height: 60.6rem;
+}
+
+.SignUpButton {
+  color: #fff;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 12px;
+  background: #9c6fe4;
+  width: 300px;
+  height: 48px;
+  margin-top: 50px;
+  cursor: pointer;
+}
+.SignUPHaveAccount {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 100px;
+}
+
+@media (max-width: 1024px) {
+  .SignUpImage {
+    display: none;
+  }
+  .SignUpContainer {
+    overflow: hidden;
+  }
+  .gg {
+  }
+  .SignUpItems {
+    justify-content: center;
+    overflow: hidden;
+  }
+}
