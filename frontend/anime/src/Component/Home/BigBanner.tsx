@@ -8,10 +8,10 @@ const BigBanner = () => {
   return (
     <div className={styles.Big_Banner}>
       {isSmallScreen ? (
-        <div style={{ width: '100%', height: '100%' }}>
-          <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={AnimeBanner} />
+        <div style={{ width: '100%', height: '130vw' }}>
+          <img style={{ width: '100%', height: '100vw', objectFit: 'cover' }} src={AnimeBanner} />
           <div className={styles.shadow}></div>
-          <div style={{ position: 'relative', bottom: '17rem', zIndex: '2' }}>
+          <div style={{ position: 'relative', bottom: '35vw', zIndex: '2' }}>
             <div className={styles.home_page_trailer_info}>
               <span className={styles.small_screen_title}>Attack on titan</span>
               <p>
