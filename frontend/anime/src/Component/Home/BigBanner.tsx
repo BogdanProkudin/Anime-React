@@ -9,18 +9,19 @@ const BigBanner = () => {
     <div className={styles.Big_Banner}>
       {isSmallScreen ? (
         <div style={{ width: '100%', height: '130vw' }}>
-          <img style={{ width: '100%', height: '100vw', objectFit: 'cover' }} src={AnimeBanner} />
           <div className={styles.shadow}></div>
-          <div style={{ position: 'relative', bottom: '35vw', zIndex: '2' }}>
-            <div className={styles.home_page_trailer_info}>
-              <span className={styles.small_screen_title}>Attack on titan</span>
-              <p>
-                <span className={styles.small_screen_info}>7.21</span>
-                <span className={styles.separator}>|</span>
-                <span className={styles.small_screen_info}>24 episodes</span>
-                <span className={styles.separator}>|</span>
-                <span className={styles.small_screen_info}>Drama,Movies,Gay</span>
-              </p>
+          <div className={styles.small_screen_bg}>
+            <div style={{ position: 'relative', top: '40%', zIndex: '2' }}>
+              <div className={styles.home_page_trailer_info}>
+                <span className={styles.small_screen_title}>Attack on titan</span>
+                <p>
+                  <span className={styles.small_screen_info}>7.21</span>
+                  <span className={styles.separator}>|</span>
+                  <span className={styles.small_screen_info}>24 episodes</span>
+                  <span className={styles.separator}>|</span>
+                  <span className={styles.small_screen_info}>Drama,Movies,Gay</span>
+                </p>
+              </div>
             </div>
           </div>
         </div>

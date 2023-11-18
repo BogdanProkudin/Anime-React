@@ -26,7 +26,7 @@ body {
   box-sizing: border-box;
   position: absolute;
   z-index: 5;
-  top: 20vw;
+  bottom: 20%;
   width: 500px;
   left: 10%;
 }
@@ -50,7 +50,7 @@ body {
   background: #000;
   background: linear-gradient(180deg, transparent, #040404 74%, #080808);
 
-  height: 90%;
+  height: 100%;
   left: 0;
   position: absolute;
   top: 0;
@@ -79,7 +79,14 @@ body {
   max-width: 70%;
   text-align: center;
 }
-
+.small_screen_bg {
+  position: absolute;
+  background: url('../icons/attack-on-titan-character-poster-uhdpaper.com-4K-8.2105.jpg');
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+}
 .BannerButton_Container {
   display: flex;
   justify-content: space-between;
