@@ -1,8 +1,9 @@
 import axios from 'axios';
-import styles from './styles.module.scss';
+import styles from '../Home/Banner/styles.module.scss';
 import React, { useRef, useEffect, useState } from 'react';
-import BigBanner from './BigBanner';
-import AnimeList from './AnimeList';
+import BigBanner from './Banner/BigBanner';
+import Slider from './Slider/BigScreenSlider';
+import { EmblaOptionsType } from 'embla-carousel-react';
 
 const HomePage = () => {
   const [animeList, setAnimeList] = useState<AnimeInfo[]>([]);
@@ -29,7 +30,6 @@ const HomePage = () => {
   return (
     <div className={styles.Home_Container}>
       <BigBanner />
-      <AnimeList />
     </div>
   );
 };
