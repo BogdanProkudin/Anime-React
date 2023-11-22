@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import { flushSync } from 'react-dom';
-import imageByIndex from './CurrentImage';
+
 import './styles.scss';
+import SliderItem from './SliderItem';
 const TWEEN_FACTOR = 1.2;
 
 type PropType = {
@@ -54,25 +55,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
         <div className="embla__container">
           {slides.map((index) => (
             <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">
-                <span>{index + 1}</span>
-              </div>
-              <div className="embla__parallax">
-                <div
-                  className="embla__parallax__layer"
-                  style={{
-                    ...(tweenValues.length && {
-                      transform: `translateX(${tweenValues[index]}%)`,
-                    }),
-                  }}
-                >
-                  <img
-                    className="embla__slide__img embla__parallax__img"
-                    src={imageByIndex(index)}
-                    alt="Your alt text"
-                  />
-                </div>
-              </div>
+              <SliderItem index={index} tweenValues={tweenValues} />
             </div>
           ))}
         </div>

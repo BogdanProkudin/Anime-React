@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Poppins:ital@1&display=swap');
 body {
-  background-color: black;
+  background-color: rgb(18, 18, 18);
 }
 .Big_Banner {
   width: 100%;
@@ -38,9 +38,7 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Тень текста */
   margin-bottom: 20px; /* Пространство после заголовка */
 }
-.Home_Container {
-  background-color: black;
-}
+
 .big_banner_subtext_header_video {
   font-size: 22px;
   color: white;

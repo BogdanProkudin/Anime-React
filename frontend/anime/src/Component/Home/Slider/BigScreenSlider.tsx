@@ -2,8 +2,9 @@ import React from 'react';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import { PrevButton, NextButton, usePrevNextButtons } from './SliderArrowButtons';
 import styles from './styles.module.scss';
-import imageByIndex from './CurrentImage';
-import { useMediaQuery } from 'react-responsive';
+import imageByIndex from './CurrentImages';
+import SliderItem from './SliderItem';
+
 type PropType = {
   slides: number[];
   options?: EmblaOptionsType;
@@ -24,15 +25,8 @@ const Slider: React.FC<PropType> = (props) => {
           <div className={styles.embla__viewport} ref={emblaRef}>
             <div className={styles.embla__container}>
               {slides.map((index) => (
-                <div className={styles.embla__slide} key={index}>
-                  <div className={styles.embla__slide__number}>
-                    <span>{index + 1}</span>
-                  </div>
-                  <img
-                    className={styles.embla__slide__img}
-                    src={imageByIndex(index)}
-                    alt="Your alt text"
-                  />
+                <div key={index}>
+                  <SliderItem index={index} />
                 </div>
               ))}
             </div>

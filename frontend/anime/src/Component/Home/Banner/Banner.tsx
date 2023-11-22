@@ -43,8 +43,15 @@ const BigBanner = () => {
                 </div>
               </div>
               <div style={{ position: 'relative', top: '5rem' }}>
-                <h1 style={{ color: 'white', fontSize: '22px', marginBlockEnd: '0px' }}>
-                  Special For You :{' '}
+                <h1
+                  style={{
+                    color: 'white',
+                    fontSize: '22px',
+                    marginBlockEnd: '0px',
+                    marginLeft: '5%',
+                  }}
+                >
+                  Special For You :
                 </h1>
                 <EmblaCarousel slides={SLIDES} options={OPTIONSSmallScreen} />
               </div>
@@ -54,10 +61,7 @@ const BigBanner = () => {
       ) : (
         <div className={styles.Big_Screeen_BannerBig}>
           <video muted loop autoPlay className={styles.Big_Banner_Video}>
-            <source
-              src="https://v1.pinimg.com/videos/mc/720p/64/ec/ec/64ecec5f32799e85346dd0dafecf8646.mp4"
-              type="video/mp4"
-            />
+            <source src={require('../../icons/Video.mp4')} type="video/mp4" />
           </video>
           <div className={styles.big_banner_text_container}>
             <h1 className={styles.big_banner_text_header_video}>Attack on Titan</h1>

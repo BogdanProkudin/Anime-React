@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&family=Poppins:ital@1&family=Roboto&display=swap');
 .embla {
   --slide-spacing: 2rem;
   --slide-size: 12%;
@@ -97,9 +98,60 @@
   width: 65%;
   height: 65%;
 }
+.poster_shadow {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  height: 35.33%; /* Занимает 1/3 по высоте */
+  background: linear-gradient(180deg, transparent, rgb(18, 18, 18) 74%, rgb(18, 18, 18));
+}
 
-// @media only screen and (min-width: 767px) and (max-width: 1024px) {
-//   .embla__viewport {
-//     width: 72vw;
-//   }
-// }
+.slider_items_container {
+  position: absolute;
+  z-index: 4;
+  bottom: 12%;
+  left: 18%;
+}
+.slider_item_title {
+  font-size: 17px;
+
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 5px;
+}
+.slider_item_subtext {
+  font-size: 16px;
+
+  color: rgb(151, 149, 149);
+  font-family: 'Roboto', sans-serif;
+  border-radius: 5px;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #131212;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #685b5b;
+  border-radius: 6px;
+  border: 3px solid #000000;
+}
+
+* {
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Ширина бегунка (ползунка) */
+*::-moz-scrollbar-thumb {
+  width: 12px;
+}
+
+/* Обводка бегунка (ползунка) */
+*::-moz-scrollbar-thumb {
+  border-radius: 6px;
+  border: 3px solid #fff;
+}
