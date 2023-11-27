@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import * as UserController from "./controller/UserController";
 import NodeMediaServer from "node-media-server";
-
+import axios from "axios";
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -20,29 +20,20 @@ mongoose
 
 app.post("/Registration", UserController.Registration);
 app.post("/LogIn", UserController.LogIn);
-// ДРУГОЕ
-// const config = {
-//   rtmp: {
-//     port: 1935,
-//     chunk_size: 60000,
-//     gop_cache: true,
-//     ping: 60,
-//     ping_timeout: 30,
-//   },
-//   http: {
-//     port: 8000,
-//     allow_origin: "*",
-//     mediaroot: "./media",
-//     webroot: "./www",
-//     stream_route: "/live/",
-//     websocket: {
-//       port: 8000,
-//     },
-//   },
-// };
+app.get("/api/data", async (req, res) => {
+  try {
+    const response = await axios.get(
+      "https://kodikapi.com/list?token=205cbb1f38375f91b405169fa2da91a8&types=anime-serial"
+    );
+    const parsedData = response.data; // Ваша логика парсинга
+    console.log(parsedData);
 
-// const nms = new NodeMediaServer(config);
-// nms.run();
+    res.json(parsedData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 app.listen(3333, () => {
   try {
     return console.log("Server OK");
