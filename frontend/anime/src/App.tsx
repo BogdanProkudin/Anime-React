@@ -2,6 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import SignInPage from './Component/SignIn/SignIn';
 import SignUpPage from './Component/SignUp/SignUp';
 import HomePage from './Component/Home/Home';
+import YourComponent from './Component/Video/Video';
 // import VideoPlayer from './Component/Home/VideoPayer';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       path: '/Home',
       element: <HomePage />,
     },
+    { path: '/Video', element: <YourComponent /> },
   ];
   const routing = useRoutes(routes);
   return <div className="App">{routing}</div>;

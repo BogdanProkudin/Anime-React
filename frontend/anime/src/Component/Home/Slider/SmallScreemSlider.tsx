@@ -4,6 +4,7 @@ import { flushSync } from 'react-dom';
 
 import './styles.scss';
 import SliderItem from './SliderItem';
+import { useAppSelector } from '../../../redux/hook';
 const TWEEN_FACTOR = 1.2;
 
 type PropType = {
@@ -15,6 +16,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [tweenValues, setTweenValues] = useState<number[]>([]);
+  const ImagesPoster = useAppSelector((state) => state.getAnime.animePoster);
+  const ImagesTitle = useAppSelector((state) => state.getAnime.animeTitle);
+  const AnimeGenres: any = useAppSelector((state) => state.getAnime.animeGenres);
+  const AnimeYear = useAppSelector((state) => state.getAnime.animeYear);
 
   const onScroll = useCallback(() => {
     if (!emblaApi) return;
@@ -55,7 +60,13 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
         <div className="embla__container">
           {slides.map((index) => (
             <div className="embla__slide" key={index}>
-              <SliderItem index={index} tweenValues={tweenValues} />
+              <SliderItem
+                ImagesPoster={ImagesPoster}
+                ImagesTitle={ImagesTitle}
+                AnimeGenres={AnimeGenres}
+                AnimeYear={AnimeYear}
+                index={index}
+              />
             </div>
           ))}
         </div>

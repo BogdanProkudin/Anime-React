@@ -1,0 +1,69 @@
+html,
+body {
+}
+
+.image-collection {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 1556px;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 350px;
+  gap: 50px;
+  width: 465px;
+  overflow: hidden;
+
+  border-radius: 50px;
+  background-color: rgb(40, 40, 40);
+}
+
+.collection_title_container {
+  display: flex;
+  margin-top: 60px;
+  flex-direction: column;
+  align-items: center;
+}
+.collection_title {
+  color: white;
+  font-size: 20px;
+  white-space: 'pre-line';
+}
+.rotated-image {
+  width: 170px;
+
+  height: 220px;
+  object-fit: cover;
+  margin: 10px;
+  border-radius: 10px;
+  margin: 0;
+  transition: transform 0.3s ease;
+}
+
+.fan-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fan-image {
+  width: 160px; /* Установите желаемую ширину и высоту изображения */
+  height: auto;
+  border-radius: 10px;
+  border: 6px solid black;
+  transition: transform 0.3s ease; /* Анимация поворота */
+}
+
+@media screen and (max-width: 925px) {
+  .image-collection {
+    gap: 30px;
+  }
+}

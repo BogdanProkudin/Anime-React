@@ -74,7 +74,6 @@ const BigBanner = () => {
               <HomeButton colorText="white" placeholderText="To Watch" backgroundColor="black" />
             </div>
           </div>
-          <Slider slides={SLIDES} options={OPTIONS} />
         </div>
       )}
     </div>
