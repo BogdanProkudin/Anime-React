@@ -58,6 +58,7 @@ const HomePage = () => {
         <Collection />
         <AnimeList />
       </div>
+      <h1>qweqwe</h1>
     </div>
   );
 };
