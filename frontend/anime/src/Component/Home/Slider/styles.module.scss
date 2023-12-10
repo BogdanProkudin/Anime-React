@@ -30,9 +30,10 @@
 }
 .embla__slide__img {
   display: block;
-  height: var(--slide-height);
+
   border-radius: 30px;
   object-fit: cover;
+  height: 300px;
   width: 14rem;
 }
 .embla__slide__number {
@@ -101,10 +102,10 @@
 }
 .poster_shadow {
   position: absolute;
-  bottom: 65px;
-  left: 30px;
-  width: 90%;
+  bottom: 63px;
+  right: -5px;
   border-radius: 40px;
+  width: 232px;
   height: 35.33%;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
 }

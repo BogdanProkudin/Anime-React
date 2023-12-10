@@ -5,19 +5,16 @@ import HomeButton from './BannerButton';
 import Slider from '../Slider/BigScreenSlider';
 import { EmblaOptionsType } from 'embla-carousel-react';
 import EmblaCarousel from '../Slider/SmallScreemSlider';
+import { useEffect } from 'react';
+import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
+import { useAppDispatch } from '../../../redux/hook';
 const BigBanner = () => {
-  const OPTIONS: EmblaOptionsType = {
-    align: 'start',
-    dragFree: true,
-    loop: false,
-  };
-  const OPTIONSSmallScreen: EmblaOptionsType = {
-    dragFree: true,
-  };
-  const SLIDE_COUNT = 9;
-  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' });
-
+  const isPhoneScreen = useMediaQuery({ query: '(max-width: 500px)' });
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAnimeSliderThunk());
+  }, []);
   return (
     <div className={styles.Big_Banner}>
       {isSmallScreen ? (
@@ -49,11 +46,11 @@ const BigBanner = () => {
                     fontSize: '22px',
                     marginBlockEnd: '0px',
                     marginLeft: '5%',
+                    marginTop: '2rem',
                   }}
                 >
                   Special For You :
                 </h1>
-                <EmblaCarousel slides={SLIDES} options={OPTIONSSmallScreen} />
               </div>
             </div>
           </div>

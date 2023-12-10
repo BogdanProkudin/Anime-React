@@ -6,6 +6,7 @@ import HeaderButton from './HeaderButton';
 import { useMediaQuery } from 'react-responsive';
 const Header = () => {
   const isSmallScreen = useMediaQuery({ query: '(min-width: 767px)' });
+  const isPhoneScreen = useMediaQuery({ query: '(max-width: 500px)' });
   return (
     <div className={styles.header}>
       <div className={styles.header_container}>
@@ -15,7 +16,7 @@ const Header = () => {
         <div className={styles.header_button_container}>
           <HeaderButton
             placeholderText="Log In"
-            width="85px"
+            width={isPhoneScreen ? '50px' : '90px'}
             backgroundColor="black"
             textColor="white"
           />
@@ -23,7 +24,7 @@ const Header = () => {
           <HeaderButton
             placeholderText={'Get started'}
             backgroundColor={'white'}
-            width={'114px'}
+            width={isPhoneScreen ? '63px' : '114px'}
             textColor={'black'}
           />
         </div>

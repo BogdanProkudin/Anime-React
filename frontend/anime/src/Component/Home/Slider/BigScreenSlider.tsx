@@ -5,29 +5,18 @@ import styles from './styles.module.scss';
 //
 import SliderItem from './SliderItem';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
-import { getAnimeThunk } from '../../../redux/slices/Anime';
+import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
+import ImageGrid from '../AnimeList/SkeletonList';
 
 type PropType = {
-  slides: number[];
   options?: EmblaOptionsType;
 };
 
 const Slider: React.FC<PropType> = (props) => {
-  const { slides, options } = props;
+  const { options } = props;
+  const slides = useAppSelector((state) => state.getAnime.animeSlider);
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const dispatch = useAppDispatch();
-  const ImagesPoster = useAppSelector((state) => state.getAnime.animePoster);
-  const ImagesTitle = useAppSelector((state) => state.getAnime.animeTitle);
-  const AnimeGenres: any = useAppSelector((state) => state.getAnime.animeGenres);
-  const AnimeYear = useAppSelector((state) => state.getAnime.animeYear);
-  useEffect(() => {
-    const getAnimeFunc = async () => {
-      await dispatch(getAnimeThunk());
-    };
-    getAnimeFunc();
-  }, []);
-  const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
-    usePrevNextButtons(emblaApi);
+  const AnimeStatusLoader = useAppSelector((state) => state.getAnime.animeStatus);
 
   return (
     <div className={styles.slides_container}>
@@ -35,21 +24,20 @@ const Slider: React.FC<PropType> = (props) => {
       <div className={styles.embla}>
         <div className={styles.embla__viewport} ref={emblaRef}>
           <div className={styles.embla__container}>
-            {slides.map((index) => (
-              <SliderItem
-                ImagesPoster={ImagesPoster}
-                ImagesTitle={ImagesTitle}
-                AnimeGenres={AnimeGenres}
-                AnimeYear={AnimeYear}
-                index={index}
-              />
-            ))}
+            {slides.map((anime: AnimeInfo, index) => {
+              return AnimeStatusLoader === 'loader' ? (
+                <ImageGrid />
+              ) : (
+                <SliderItem
+                  index={index}
+                  ImagesPoster={anime.images.jpg.image_url}
+                  ImagesTitle={anime.title_english}
+                  AnimeGenres={anime.genres[1]}
+                  AnimeYear={anime.year}
+                />
+              );
+            })}
           </div>
-        </div>
-
-        <div className="embla__buttons">
-          <PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
-          <NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
         </div>
       </div>
     </div>

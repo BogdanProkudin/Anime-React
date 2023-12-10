@@ -1,45 +1,73 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-const initialState = {
-  animePoster: [],
-  animeTitle: [],
-  animeGenres: [],
-  animeYear: [],
+type getAnimeThunkProps = {
+  limit: number | undefined;
+  currPage: number | undefined;
 };
-export const getAnimeThunk = createAsyncThunk('getAnime/getAnimeData', async function () {
-  try {
-    const response = await axios.get('https://api.jikan.moe/v4/top/anime?filter=bypopularity', {
-      params: {
-        page: 1,
-        limit: 25,
-      },
-    });
-    return response.data.data;
-  } catch (err) {
-    console.log('ERROR WHEN FERCHING AnimeData :', err);
-  }
-});
+const initialState = {
+  animeStatus: '',
+  animeSlider: [],
+  animeList: [],
+};
+export const getAnimeSliderThunk = createAsyncThunk(
+  'getAnime/getAnimeDataSlider',
+  async function () {
+    try {
+      const response = await axios.get('https://api.jikan.moe/v4/top/anime?filter=bypopularity', {
+        params: {
+          page: 1,
+          limit: 9,
+        },
+      });
+      console.log(response.data.data);
+
+      return response.data.data;
+    } catch (err) {
+      console.log('ERROR WHEN FERCHING AnimeData :', err);
+    }
+  },
+);
+export const getAnimeListThunk = createAsyncThunk(
+  'getAnime/getAnimeDataList',
+  async function ({ limit, currPage }: getAnimeThunkProps) {
+    try {
+      const response = await axios.get('https://api.jikan.moe/v4/top/anime?filter=bypopularity', {
+        params: {
+          page: currPage,
+          limit: limit,
+        },
+      });
+      console.log(response.data.data);
+
+      return response.data.data;
+    } catch (err) {
+      console.log('ERROR WHEN FERCHING AnimeData :', err);
+    }
+  },
+);
 const AnimeSlice = createSlice({
   name: 'Anime',
   initialState,
   reducers: {},
   extraReducers: {
-    ['getAnime/getAnimeData/pending']: (state) => {},
-    ['getAnime/getAnimeData/fulfilled']: (state, action) => {
-      state.animePoster = action.payload.slice(0, 9).map((imagePoster: any) => {
-        return imagePoster.images.jpg.image_url;
-      });
-      state.animeTitle = action.payload.slice(0, 9).map((animeTitle: any) => {
-        return animeTitle.title_english;
-      });
-      state.animeYear = action.payload.slice(0, 9).map((animeYear: any) => {
-        return animeYear.year;
-      });
-      state.animeGenres = action.payload.slice(0, 9).flatMap((subArray: any) => {
-        return subArray.genres.length > 0 ? [subArray.genres[1]] : [];
-      });
+    ['getAnime/getAnimeDataList/pending']: (state) => {
+      console.log('loading');
+      state.animeStatus = 'loading';
     },
-    ['getAnime/getAnimeData/rejected']: (state, action) => {},
+    ['getAnime/getAnimeDataList/fulfilled']: (state, action) => {
+      state.animeList = action.payload;
+      state.animeStatus = 'finished';
+    },
+    ['getAnime/getAnimeDataList/rejected']: (state, action) => {
+      state.animeStatus = 'Error';
+    },
+    ['getAnime/getAnimeDataSlider/fulfilled']: (state, action) => {
+      state.animeSlider = action.payload
+        ? action.payload
+        : [...new Array(10)].slice(0, 9).map((anime: any) => {
+            return anime;
+          });
+    },
   },
 });
 

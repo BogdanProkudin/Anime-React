@@ -2,19 +2,19 @@ import { useMediaQuery } from 'react-responsive';
 
 import './styles.scss';
 import styles from './styles.module.scss';
-import { useEffect } from 'react';
+import noPhoto from '../../icons/noimage.webp';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
-import { getAnimeThunk } from '../../../redux/slices/Anime';
+
 type AnimeGenresProps = {
   name: string;
 };
 type SliderItemProps = {
   tweenValues?: number[];
   index: number;
-  ImagesPoster: string[];
-  ImagesTitle: string[];
-  AnimeGenres: AnimeGenresProps[];
-  AnimeYear: string[];
+  ImagesPoster: string;
+  ImagesTitle: string;
+  AnimeGenres: AnimeGenresProps;
+  AnimeYear: number;
 };
 const SliderItem: React.FC<SliderItemProps> = ({
   index,
@@ -26,36 +26,44 @@ const SliderItem: React.FC<SliderItemProps> = ({
 }) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' });
 
-  const imageByIndex = (index: number): string => ImagesPoster[index % ImagesPoster.length];
   return (
     <>
-      {isSmallScreen && tweenValues ? (
+      {isSmallScreen ? (
         <div className="embla__parallax">
           <div
             className="embla__parallax__layer"
             style={{
-              ...(tweenValues.length && {
+              ...(tweenValues?.length && {
                 transform: `translateX(${tweenValues[index]}%)`,
               }),
             }}
           >
             <img
               className="embla__slide__img embla__parallax__img"
-              src={imageByIndex(index)}
+              src={`${ImagesPoster}`}
               alt="Your alt text"
             />
+            <div className={styles.slider_items_container}>
+              <h1 className={styles.slider_item_title}>{ImagesTitle}</h1>;
+              <span className={styles.slider_item_subtext}>
+                {AnimeYear},{AnimeGenres ? AnimeGenres.name : 'Unknown'}
+              </span>
+            </div>
+            <div className={'small_screen_shadow'}></div>
           </div>
         </div>
       ) : (
-        <div
-          onClick={() => console.log('ANIME NAME IS ', ImagesTitle[index])}
-          className={styles.embla__slide}
-        >
-          <img className={styles.embla__slide__img} src={imageByIndex(index)} alt="Your alt text" />
+        <div className={styles.embla__slide}>
+          <img
+            className={styles.embla__slide__img}
+            src={`${ImagesPoster ? ImagesPoster : noPhoto}`}
+            alt="Your alt text"
+          />
+
           <div className={styles.slider_items_container}>
-            <h1 className={styles.slider_item_title}>{ImagesTitle[index]}</h1>;
+            <h1 className={styles.slider_item_title}>{ImagesTitle ? ImagesTitle : 'Unknown'}</h1>;
             <span className={styles.slider_item_subtext}>
-              {AnimeYear[index]},{AnimeGenres[index] ? AnimeGenres[index].name : 'Unknown'}
+              {AnimeYear},{AnimeGenres ? AnimeGenres.name : 'Unknown'}
             </span>
           </div>
           <div className={styles.poster_shadow}></div>

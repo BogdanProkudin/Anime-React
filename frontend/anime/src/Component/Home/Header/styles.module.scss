@@ -91,5 +91,13 @@ nav a {
   }
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 500px) {
+  .header_button {
+    font-size: 11px;
+    height: 35px;
+    padding: 0;
+  }
+  .header_button_container {
+    justify-content: space-evenly;
+  }
 }

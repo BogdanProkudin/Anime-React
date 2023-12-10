@@ -1,3 +1,4 @@
+import { useMediaQuery } from 'react-responsive';
 import styles from './styles.module.scss';
 type HeaderButtonProps = {
   placeholderText: string;

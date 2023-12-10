@@ -50,12 +50,12 @@ body {
 }
 .shadow {
   background: #000;
-  background: linear-gradient(180deg, transparent, #040404 74%, #080808);
-
+  background: linear-gradient(180deg, transparent, #040404 90%, #080808);
+  max-height: 500px;
   height: 100%;
   left: 0;
   position: absolute;
-  top: 0;
+
   width: 100%;
   z-index: 2;
 }
@@ -83,10 +83,10 @@ body {
   text-align: center;
 }
 .small_screen_bg {
-  position: absolute;
   background: url('../../icons/attack-on-titan-character-poster-uhdpaper.com-4K-8.2105.jpg');
+  object-fit: cover;
   background-repeat: no-repeat;
-  height: 100%;
+  height: 500px;
   width: 100%;
   background-size: cover;
 }
@@ -132,19 +132,7 @@ body {
   height: 400px;
   border-radius: 40px;
 }
-.embla {
-  overflow: hidden;
-  position: absolute;
-  bottom: 20%;
-}
-.embla__container {
-  display: flex;
-}
-.embla__slide {
-  flex: 0 0 100%;
-  min-width: 200px;
-  background-color: RED;
-}
+
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .big_banner_text_header_video {
     font-size: 3rem;
