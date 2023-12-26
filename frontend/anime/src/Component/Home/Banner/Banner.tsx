@@ -11,6 +11,7 @@ import { useAppDispatch } from '../../../redux/hook';
 const BigBanner = () => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' });
   const isPhoneScreen = useMediaQuery({ query: '(max-width: 500px)' });
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAnimeSliderThunk());

@@ -2,8 +2,8 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import SignInPage from './Component/SignIn/SignIn';
 import SignUpPage from './Component/SignUp/SignUp';
 import HomePage from './Component/Home/Home';
-import YourComponent from './Component/Video/Video';
-// import VideoPlayer from './Component/Home/VideoPayer';
+import EpisodeVideo from './Component/Video/EpisodeVideo';
+import AnimeEpisode from './Component/Video/AnimeEpisode';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -16,7 +16,7 @@ function App() {
       path: '/Home',
       element: <HomePage />,
     },
-    { path: '/Video', element: <YourComponent /> },
+    { path: '/Video/:AnimeTitle', element: <AnimeEpisode /> },
   ];
   const routing = useRoutes(routes);
   return <div className="App">{routing}</div>;

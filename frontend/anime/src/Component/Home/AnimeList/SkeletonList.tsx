@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader, { IContentLoaderProps } from 'react-content-loader';
 import { JSX } from 'react/jsx-runtime';
-const ImageGrid = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => (
+const AnimeListSkeleton = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => (
   <ContentLoader
     speed={2}
     width={224}
@@ -15,4 +15,4 @@ const ImageGrid = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => (
   </ContentLoader>
 );
 
-export default ImageGrid;
+export default AnimeListSkeleton;

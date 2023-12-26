@@ -1,0 +1,72 @@
+.info_section_container {
+  display: flex;
+
+  align-items: baseline;
+}
+
+.anime_info_details_container {
+  display: flex;
+  margin-left: 20rem;
+  flex-direction: column;
+  margin: 1rem;
+  margin-left: 2rem;
+  gap: 20px;
+  justify-content: space-between;
+}
+.anime_info_details_title {
+  color: white;
+  font-size: 26px;
+  font-weight: 400;
+}
+
+.anime_info_details_item {
+  color: grey;
+  font-size: 16px;
+}
+.anime_info_description_container {
+  margin-left: 5rem;
+}
+.anime_info_details_text {
+  max-width: 50rem;
+
+  word-wrap: break-word;
+  color: grey;
+  white-space: break-spaces;
+  font-size: 16px;
+}
+.anime_episode_info_text {
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20px;
+  font-size: 16px;
+}
+@media screen and (max-width: 750px) {
+  .info_section_container {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .anime_info_details_container {
+    margin: 0px;
+  }
+  .info_section_container {
+    align-items: flex-start;
+  }
+  .anime_info_description_container {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .anime_info_details_text {
+    font-size: 13px;
+  }
+  .anime_episode_info_text {
+    font-size: 14px;
+  }
+  .anime_info_details_title {
+    font-size: 24px;
+  }
+}

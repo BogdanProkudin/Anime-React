@@ -1,0 +1,21 @@
+.sections_container {
+  margin: 2.7rem;
+  display: flex;
+
+  flex-direction: column;
+}
+.sections_wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  align-items: center;
+  width: 400px;
+}
+
+@media screen and (max-width: 660px) {
+  .sections_wrapper {
+    justify-content: space-between;
+    width: 200px;
+  }
+}

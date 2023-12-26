@@ -73,3 +73,29 @@ type AnimeInfo = {
   url: string;
   year: number;
 };
+
+interface AnimeSerial {
+  blocked_countries: string[];
+  blocked_seasons: Record<string, unknown>;
+  camrip: boolean;
+  created_at: string;
+  episodes_count: number;
+  id: string;
+  imdb_id: string;
+  kinopoisk_id: string;
+  last_episode: number;
+  last_season: number;
+  lgbt: boolean;
+  link: string;
+  other_title: string;
+  quality: string;
+  screenshots: string[];
+  shikimori_id: string;
+  title: string;
+  title_orig: string;
+  translation: Translation;
+  type: string;
+  updated_at: string;
+  worldart_link: string;
+  year: number;
+}

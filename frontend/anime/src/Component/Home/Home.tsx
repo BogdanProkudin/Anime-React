@@ -9,18 +9,19 @@ import Slider from './Slider/BigScreenSlider';
 import AnimeList from './AnimeList/AnimeList';
 import EmblaCarousel from './Slider/SmallScreemSlider';
 import { useMediaQuery } from 'react-responsive';
+import { useAppSelector } from '../../redux/hook';
 
 const HomePage = () => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' });
   const OPTIONSSmallScreen: EmblaOptionsType = {
     dragFree: true,
   };
-  const SLIDE_COUNT = 9;
-
+  const AnimeSearchValue = useAppSelector((state) => state.getAnime.animeSearchInput);
   return (
     <div style={{ maxWidth: '100vw' }}>
       <div className={styles.Home_Container}>
         <Header />
+
         <BigBanner />
 
         {isSmallScreen ? (
@@ -28,8 +29,9 @@ const HomePage = () => {
         ) : (
           <Slider options={OPTIONSSmallScreen} />
         )}
+        <Collection />
         {/* <Slider slides={SLIDES} options={OPTIONS} /> */}
-        {/* <Collection /> */}
+
         <AnimeList />
       </div>
       <h1>qweqwe</h1>

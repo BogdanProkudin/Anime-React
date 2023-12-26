@@ -64,6 +64,91 @@ nav a {
 }
 .header_title {
   color: white;
+  cursor: pointer;
+}
+.header_input {
+  width: 380px;
+  height: 20px;
+  padding: 8px;
+  border-radius: 10px;
+  background-color: transparent;
+  color: whitesmoke;
+  border: 1px grey solid;
+  outline: none;
+}
+.autosuggest_container {
+  position: relative;
+  width: 400px;
+}
+
+.suggestions_container {
+  position: absolute;
+
+  top: 100%;
+  left: 0;
+
+  width: 100%;
+  background-color: #2d2727;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.suggestion_item {
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 8px;
+  padding-left: 0;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    .suggestion_item {
+      color: rgb(242, 226, 132);
+      .suggestion_item_subinfo_item {
+        color: rgb(242, 226, 132);
+      }
+      .suggestion_item_info_desc {
+        color: rgb(242, 226, 132);
+      }
+    }
+  }
+}
+
+.suggestion_item_info_container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 5px;
+}
+.suggestion_item_info_desc {
+  font-size: 14px;
+  color: gray;
+  max-width: 175px;
+  padding-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.suggestion_item_subinfo_container {
+  display: flex;
+  justify-content: space-between;
+  width: 165px;
+}
+
+.suggestion_item_subinfo_item {
+  font-size: 14px;
+  color: gray;
+}
+.suggestion_image {
+  height: 100px;
+  width: 60px;
+  object-fit: cover;
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   nav a {
@@ -89,6 +174,12 @@ nav a {
     font-size: 13px;
     height: 38px;
   }
+  .header_input {
+    width: 240px;
+  }
+  .autosuggest_container {
+    width: 255px;
+  }
 }
 
 @media only screen and (max-width: 500px) {
@@ -99,5 +190,22 @@ nav a {
   }
   .header_button_container {
     justify-content: space-evenly;
+  }
+  .header_input {
+    width: 200px;
+  }
+  .autosuggest_container {
+    width: 215px;
+  }
+  .suggestion_item {
+    font-size: 14px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .header_input {
+    width: 150px;
+  }
+  .autosuggest_container {
+    width: 165px;
   }
 }

@@ -1,0 +1,20 @@
+.anime_search_container {
+  z-index: 5;
+  background-color: rgb(42, 38, 38);
+  position: absolute;
+  top: 150px;
+  max-width: 90rem;
+
+  left: 50%; // Position the modal at the center horizontally
+  transform: translate(-50%); // Center the modal
+  height: 1000px;
+  border-radius: 20px;
+}
+
+.anime_search_item {
+  display: grid;
+  max-height: 1000px;
+  gap: 25px;
+  overflow: scroll;
+  grid-template-columns: repeat(5, 1fr); /* 3 колонки */
+}

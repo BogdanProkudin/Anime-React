@@ -3,12 +3,29 @@ import styles from './styles.module.scss';
 import { useMediaQuery } from 'react-responsive';
 import { useAppDispatch } from '../../../redux/hook';
 import { getAnimeListThunk } from '../../../redux/slices/Anime';
-const Pagination = () => {
+import { RefObject, useEffect, useState } from 'react';
+interface PaginationProps {
+  AnimeContainerRef: RefObject<HTMLDivElement>;
+}
+const Pagination: React.FC<PaginationProps> = ({ AnimeContainerRef }) => {
   const dispatch = useAppDispatch();
   const isPhoneScreen = useMediaQuery({ query: '(max-width: 461px)' }); // замените на свою логику для определения размера экрана
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' }); // замените на свою логику для определения размера экрана
   const isMiddleScreen = useMediaQuery({ query: '(max-width: 963px)' }); // замените на свою логику для определения размера экрана
   const isBigScreen = useMediaQuery({ query: '(max-width: 1200px)' }); // замените на свою логику для определения размера экрана
+  const [firstRender, setFirstRender] = useState(true);
+
+  const [AnimeContainerTop, setAnimeContainerTop] = useState(0);
+  useEffect(() => {
+    if (AnimeContainerRef.current) {
+      const rect = AnimeContainerRef.current.getBoundingClientRect();
+      if (rect) {
+        const { top } = rect;
+
+        setAnimeContainerTop(top);
+      }
+    }
+  }, []);
 
   function handlePageSelect(selectedPage: { selected: number }) {
     dispatch(
@@ -17,8 +34,14 @@ const Pagination = () => {
         limit: isPhoneScreen ? 6 : isSmallScreen ? 9 : 15,
       }),
     );
-    window.scrollTo({ top: 800, behavior: 'smooth' });
+
+    if (!firstRender) {
+      window.scrollTo({ top: AnimeContainerTop, behavior: 'smooth' });
+    } else {
+      setFirstRender(false);
+    }
   }
+
   const pageRangeDisplayed = isPhoneScreen
     ? 3
     : isSmallScreen
