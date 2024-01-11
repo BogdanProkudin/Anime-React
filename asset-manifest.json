@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/Anime-React/static/css/main.fa7471a5.css",
+    "main.js": "/Anime-React/static/js/main.586fc92f.js",
+    "static/media/Video.mp4": "/Anime-React/static/media/Video.8b3661652bd6416d2687.mp4",
+    "static/media/attack-on-titan-character-poster-uhdpaper.com-4K-8.2105.jpg": "/Anime-React/static/media/attack-on-titan-character-poster-uhdpaper.com-4K-8.2105.f742fc6342db248af167.jpg",
+    "static/media/-removebg-preview.png": "/Anime-React/static/media/958ed8fb87aae5e913bfbf144a6cb606-removebg-preview.1ed73b5a0500b1271872.png",
+    "static/media/anime-style-game-avatar-mascot-600nw-2322112663.webp": "/Anime-React/static/media/anime-style-game-avatar-mascot-600nw-2322112663.9aa405a79dc460b30b70.webp",
+    "static/media/jpg": "/Anime-React/static/media/377937214fb2132ebdb424f25ce28725.dc3cf9f6dca0d152d82c.jpg",
+    "static/media/noimage.webp": "/Anime-React/static/media/noimage.05ea85c26b65d9bbbcb9.webp",
+    "index.html": "/Anime-React/index.html",
+    "main.fa7471a5.css.map": "/Anime-React/static/css/main.fa7471a5.css.map",
+    "main.586fc92f.js.map": "/Anime-React/static/js/main.586fc92f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fa7471a5.css",
+    "static/js/main.586fc92f.js"
+  ]
+}
