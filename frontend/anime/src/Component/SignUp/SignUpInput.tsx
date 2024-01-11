@@ -25,7 +25,7 @@ interface ISignInInput {
 }
 const SignUpInput: React.FC<ISignInInput> = ({ placeholderText, type, register, inputErrors }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const Passwordregex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+  const passwordregex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
   const usernameRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9_]{3,24}$/;
   const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const RegisterErrorMessages = useAppSelector((state) => state.auth.UserRegistationErrors);
@@ -41,7 +41,7 @@ const SignUpInput: React.FC<ISignInInput> = ({ placeholderText, type, register, 
               pattern: {
                 value:
                   placeholderText === 'Password'
-                    ? Passwordregex
+                    ? passwordregex
                     : placeholderText === 'UserName'
                     ? usernameRegex
                     : emailRegex,

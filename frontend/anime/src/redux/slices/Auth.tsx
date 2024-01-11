@@ -26,7 +26,7 @@ export const UserRegistration = createAsyncThunk<void, RegistrationResponse, { r
   'Registration/fetchUserData',
   async function (data, { rejectWithValue }) {
     try {
-      await axios.post<RegistrationResponse>('http://localhost:3333/Registration', data);
+      await axios.post<RegistrationResponse>('http://localhost:3003/Registration', data);
     } catch (error) {
       console.log('ERROR WHEN FETCHING USER DATA', error);
 
@@ -58,13 +58,14 @@ export const UserLogin = createAsyncThunk<void, LoginResponse>(
   'LogIn/fetchUserData',
   async function (data: any, { rejectWithValue }) {
     try {
-      const response = await axios.post('http://localhost:3333/LogIn', data);
-      console.log(response);
+      const response = await axios.post('http://localhost:3003/LogIn', data);
       const token: string | undefined = response.data.token;
       const user = response.data.user;
+      const userString = JSON.stringify(user);
+
       if (token) {
         localStorage.setItem('token', token);
-        localStorage.setItem('CurrentUser', user);
+        localStorage.setItem('CurrentUser', userString);
       }
       if (!token) {
         return rejectWithValue('Неверная почта или пароль');

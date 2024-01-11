@@ -8,13 +8,14 @@ interface AnimeSearchParams {
   token?: string;
   title: string | undefined;
   full_match?: boolean;
-  limit?: number;
+  limit?: number | string;
   title_orig?: string | undefined;
 }
 const initialState = {
   animeStatus: '',
   animeSlider: [],
   animeEpisode: {},
+  animeSearched: [],
   animeList: [],
   animeSearchInput: '',
 };
@@ -37,11 +38,27 @@ export const getAnimeSliderThunk = createAsyncThunk(
 );
 export const getAnimeSeriaThunk = createAsyncThunk(
   'getAnime/getAnimeSeriaData',
-  async function ({ title }: AnimeSearchParams) {
+  async function ({ title, limit }: AnimeSearchParams) {
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/anime?q=${title}`);
 
-      return response.data.data.slice(0, 5);
+      return limit === 'none' ? response.data.data : response.data.data[0];
+    } catch (err) {
+      console.log('ERROR WHEN FERCHING AnimeData :', err);
+    }
+  },
+);
+export const getAnimeSearchSeriaThunk = createAsyncThunk(
+  'getAnime/getAnimeSearchSeriaData',
+  async function ({ title, full_match }: AnimeSearchParams) {
+    try {
+      const response = await axios.get(`https://api.jikan.moe/v4/anime?q=${title}`, {
+        params: {
+          full_match,
+        },
+      });
+
+      return response.data.data;
     } catch (err) {
       console.log('ERROR WHEN FERCHING AnimeData :', err);
     }
@@ -55,7 +72,14 @@ export const getAnimeSeriaLinkThunk = createAsyncThunk(
         params: { token, title, limit, full_match },
       });
 
-      return response.data.results;
+      if (response.data.results.length === 0) {
+        const response2 = await axios.get(`https://kodikapi.com/search`, {
+          params: { token, title, limit, types: 'anime-serial' },
+        });
+        return response2.data.results;
+      } else {
+        return response.data.results;
+      }
     } catch (err) {
       console.log('ERROR WHEN FERCHING AnimeData :', err);
     }
@@ -106,8 +130,16 @@ const AnimeSlice = createSlice({
             return anime;
           });
     },
+    ['getAnime/getAnimeSeriaData/pending']: (state, action) => {
+      state.animeStatus = 'pending';
+    },
     ['getAnime/getAnimeSeriaData/fulfilled']: (state, action) => {
       state.animeEpisode = action.payload;
+      state.animeStatus = 'finished';
+    },
+    ['getAnime/getAnime/getAnimeSearchSeriaData/fulfilled']: (state, action) => {
+      state.animeEpisode = action.payload;
+      state.animeStatus = 'finished';
     },
   },
 });

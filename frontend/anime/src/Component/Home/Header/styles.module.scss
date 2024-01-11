@@ -9,23 +9,25 @@
   display: flex;
   align-items: center;
   width: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between;
   height: 80px;
   border-bottom: 0.1px solid grey;
   background-color: rgb(18, 18, 18);
 }
-.header_wrapper_items {
-  display: flex;
-  justify-content: space-around;
-  max-width: 25vw;
-  width: 100%;
+.avatar_container {
+  width: 45px; /* Задайте желаемый размер для аватарки */
+  height: 45px;
+  overflow: hidden;
+  border-radius: 50%; /* Это свойство создает круглую форму */
+  border: 2px solid #fff; /* Дополнительные стили, если нужны */
+  cursor: pointer;
 }
-nav a {
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+
+.avatar_img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Заполнение контейнера аватаркой */
+  border-radius: 50%; /* На всякий случай, чтобы изображение также было круглым */
 }
 
 /* CSS */
@@ -58,27 +60,31 @@ nav a {
   display: flex;
   justify-content: space-between;
   max-width: 215px;
-  width: 100%;
-
+  margin-right: 5%;
   align-items: center;
 }
 .header_title {
+  margin-left: 3%;
   color: white;
   cursor: pointer;
 }
 .header_input {
-  width: 380px;
+  width: 400px;
   height: 20px;
   padding: 8px;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: transparent;
   color: whitesmoke;
   border: 1px grey solid;
   outline: none;
 }
 .autosuggest_container {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  width: 400px;
+  height: 30px;
+  width: 418px;
+  z-index: 100;
 }
 
 .suggestions_container {
@@ -90,13 +96,14 @@ nav a {
   width: 100%;
   background-color: #2d2727;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  z-index: 100;
   max-height: 400px;
   overflow-y: auto;
 }
 
 .suggestion_item {
   display: flex;
+
   justify-content: space-between;
 
   padding-top: 5px;
@@ -125,10 +132,17 @@ nav a {
   flex-direction: column;
   padding-left: 5px;
 }
+.suggestion_title {
+  max-width: 275px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .suggestion_item_info_desc {
   font-size: 14px;
   color: gray;
-  max-width: 175px;
+  max-width: 275px;
   padding-top: 5px;
   overflow: hidden;
   white-space: nowrap;
@@ -137,8 +151,7 @@ nav a {
 
 .suggestion_item_subinfo_container {
   display: flex;
-  justify-content: space-between;
-  width: 165px;
+  padding-top: 5px;
 }
 
 .suggestion_item_subinfo_item {
@@ -146,42 +159,164 @@ nav a {
   color: gray;
 }
 .suggestion_image {
-  height: 100px;
+  height: 85px;
   width: 60px;
   object-fit: cover;
 }
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  nav a {
-    padding: 0px;
-    font-size: 16px;
+.header_small_screen_container {
+  margin-top: 63px;
+}
+.header_small_screen_input {
+  width: -webkit-fill-available;
+  height: 30px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  border: 1px grey solid;
+  outline: none;
+}
+.autosuggest_small_screen_container {
+  position: absolute;
+  left: 0;
+  background-color: rgb(18, 18, 18);
+  height: 55px;
+  width: 100%;
+}
+
+.suggestion_small_screen_item {
+  display: flex;
+  max-width: 100%;
+  padding-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 8px;
+  padding-left: 0;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    .suggestion_item {
+      color: rgb(242, 226, 132);
+      .suggestion_item_subinfo_item {
+        color: rgb(242, 226, 132);
+      }
+      .suggestion_item_info_desc {
+        color: rgb(242, 226, 132);
+      }
+    }
   }
-  .header_wrapper_items {
-    max-width: 34vw;
-  }
+}
+.suggestion_small_screen_item_info_container {
+  display: flex;
+  max-width: 80%;
+  flex-direction: column;
+  padding-left: 5px;
+}
+.suggestion_small_screen_title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.suggestion_small_screen_item_info_desc {
+  font-size: 14px;
+  color: gray;
+
+  padding-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.suggestion_small_screen_subinfo_container {
+  display: flex;
+  padding-top: 5px;
+
+  width: 155px;
+}
+
+.suggestion_small_screen_subinfo_item {
+  font-size: 14px;
+  color: gray;
+}
+
+.header_button_view_all {
+  position: relative;
+  z-index: 99;
+  top: 400px;
+  align-items: center;
+  background-color: rgb(43, 44, 39);
+
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  fill: #000;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: -0.8px;
+  line-height: 24px;
+  width: 100%;
+
+  outline: 0;
+  padding: 0 17px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
 @media only screen and (max-width: 900px) {
   .header_title {
-    display: none;
   }
   nav a {
     font-size: 15px;
   }
   .header_container {
     height: 65px;
+    justify-content: space-between;
   }
   .header_button {
     font-size: 13px;
     height: 38px;
   }
   .header_input {
-    width: 240px;
+    width: 250px;
   }
   .autosuggest_container {
-    width: 255px;
+    width: 265px;
+  }
+  .suggestion_item_subinfo_item {
+    font-size: 12px;
+  }
+  .suggestion_image {
+    height: 70px;
+    width: 50px;
+    object-fit: cover;
+  }
+  .suggestion_title {
+    max-width: 135px;
+    font-size: 14px;
+  }
+  .suggestion_item_info_desc {
+    max-width: 135px;
+  }
+  .suggestion_item_subinfo_container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 105px;
   }
 }
-
+@media screen and (max-width: 682px) {
+  .header_button_container {
+    max-width: 255px;
+    width: 200px;
+  }
+}
 @media only screen and (max-width: 500px) {
   .header_button {
     font-size: 11px;
@@ -189,7 +324,8 @@ nav a {
     padding: 0;
   }
   .header_button_container {
-    justify-content: space-evenly;
+    justify-content: space-around;
+    max-width: 163px;
   }
   .header_input {
     width: 200px;
@@ -200,12 +336,34 @@ nav a {
   .suggestion_item {
     font-size: 14px;
   }
+  .suggestion_item_subinfo_item {
+    font-size: 12px;
+    max-width: 105px;
+  }
+  .suggestion_image {
+    height: 70px;
+    width: 50px;
+    object-fit: cover;
+  }
+  .suggestion_title {
+    max-width: 105px;
+    font-size: 14px;
+  }
+  .suggestion_item_info_desc {
+    max-width: 105px;
+  }
 }
 @media only screen and (max-width: 400px) {
-  .header_input {
-    width: 150px;
-  }
   .autosuggest_container {
     width: 165px;
+  }
+  .header_title {
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 280px) {
+  .header_title {
+    font-size: 18px;
   }
 }

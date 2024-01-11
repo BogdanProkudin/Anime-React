@@ -23,8 +23,7 @@ const EpisodeVideo: React.FC<EpisodeVideoProps> = (animeLink) => {
         <iframe
           ref={kodikPlayerRef.current && kodikPlayerRef}
           id="kodik-player"
-          width="610"
-          height="370"
+          className={styles.anime_video_screen}
           src={`${animeLink.animeLink}`}
           frameBorder="0"
           allowFullScreen

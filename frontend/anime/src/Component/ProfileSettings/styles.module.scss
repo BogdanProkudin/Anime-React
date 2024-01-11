@@ -1,0 +1,44 @@
+.profile_setting_container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 50px;
+}
+.profile_setting_variants_container {
+  width: 300px;
+  display: flex;
+}
+
+.profile_setting_variants_item {
+  color: white;
+  font-size: 20px;
+  border-radius: 20px;
+  max-width: 235px;
+  border-radius: 10px;
+  text-align: center;
+  user-select: none;
+  padding: 8px;
+  &:hover {
+    background-color: aliceblue;
+    color: black;
+  }
+}
+.profile_setting_variants_wrapper {
+  display: flex;
+
+  gap: 20px;
+}
+.profile_setting_text {
+  font-size: 35px;
+  color: white;
+}
+@media screen and (max-width: 828px) {
+  .profile_setting_variants_item {
+    font-size: 14px;
+    padding: 4px;
+  }
+  .profile_setting_text {
+    font-size: 25px;
+    width: 100px;
+  }
+}

@@ -7,6 +7,7 @@ import SliderItem from './SliderItem';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
 import ImageGrid from '../AnimeList/SkeletonList';
+import { useNavigate } from 'react-router-dom';
 
 type PropType = {
   options?: EmblaOptionsType;
@@ -16,8 +17,15 @@ const Slider: React.FC<PropType> = (props) => {
   const { options } = props;
   const slides = useAppSelector((state) => state.getAnime.animeSlider);
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const navigate = useNavigate();
   const AnimeStatusLoader = useAppSelector((state) => state.getAnime.animeStatus);
+  function handleChooseAnime(el: AnimeInfo) {
+    const AnimeTitle = el.title_english;
+    const AnimeImage = el.images.jpg.image_url;
+    console.log(AnimeTitle, 'title', AnimeImage, 'Image');
 
+    navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
+  }
   return (
     <div className={styles.slides_container}>
       <h1 style={{ fontSize: '25px', color: 'white' }}>Special For You</h1>
@@ -28,13 +36,16 @@ const Slider: React.FC<PropType> = (props) => {
               return AnimeStatusLoader === 'loader' ? (
                 <ImageGrid />
               ) : (
-                <SliderItem
-                  index={index}
-                  ImagesPoster={anime.images.jpg.image_url}
-                  ImagesTitle={anime.title_english}
-                  AnimeGenres={anime.genres[1]}
-                  AnimeYear={anime.year}
-                />
+                <div onClick={() => handleChooseAnime(anime)}>
+                  <SliderItem
+                    isParallax={false}
+                    index={index}
+                    ImagesPoster={anime.images.jpg.image_url}
+                    ImagesTitle={anime.title_english}
+                    AnimeGenres={anime.genres[1]}
+                    AnimeYear={anime.year}
+                  />
+                </div>
               );
             })}
           </div>

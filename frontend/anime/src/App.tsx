@@ -4,19 +4,23 @@ import SignUpPage from './Component/SignUp/SignUp';
 import HomePage from './Component/Home/Home';
 import EpisodeVideo from './Component/Video/EpisodeVideo';
 import AnimeEpisode from './Component/Video/AnimeEpisode';
+import ProfileSetting from './Component/ProfileSettings/ProfileSetting';
+import AnimeSearchList from './Component/AnimeSearchList/AnimeSearchList';
 
 function App() {
   const token = localStorage.getItem('token');
   console.log(token);
 
   const routes = [
-    { path: '/Registration', element: <SignUpPage /> },
+    { path: '/Registration', element: token ? <Navigate to="/Home" /> : <SignUpPage /> },
     { path: '/LogIn', element: token ? <Navigate to="/Home" /> : <SignInPage /> },
+    { path: '/Settings', element: <ProfileSetting /> },
     {
       path: '/Home',
-      element: <HomePage />,
+      element: token ? <HomePage /> : <Navigate to="/LogIn" />,
     },
-    { path: '/Video/:AnimeTitle', element: <AnimeEpisode /> },
+    { path: '/Video/:AnimeTitle', element: token ? <AnimeEpisode /> : <SignInPage /> },
+    { path: '/results/:AnimeTitle', element: token ? <AnimeSearchList /> : <SignInPage /> },
   ];
   const routing = useRoutes(routes);
   return <div className="App">{routing}</div>;

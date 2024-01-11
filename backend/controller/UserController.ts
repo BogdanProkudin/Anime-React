@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { isEmailTaken, isUserNameTaken } from "../services/UserService";
 import UserModelTypes from "../types/UserTypes";
+import { MongoClient } from "mongodb";
 export const Registration = async (req: Request, res: Response) => {
   try {
     const errors = validationResult(req);
@@ -67,3 +68,73 @@ export const LogIn = async (req: Request, res: Response) => {
     .status(200)
     .json({ message: "User Login successfully", token, user });
 };
+
+export async function updateNickname(req: Request, res: Response) {
+  try {
+    const usernameRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9_]{3,24}$/;
+    const user =
+      usernameRegex.test(req.body.newUserName) &&
+      (await UserModel.findOneAndUpdate(
+        { UserName: req.body.UserName },
+        { $set: { UserName: req.body.newUserName } },
+        { new: true }
+      ));
+
+    if (user) {
+      console.log(
+        `Username updated successfully for user with id ${user._id}.`
+      );
+      return res.json({ user });
+    } else {
+      return res.json({ message: "UserName not correct" });
+    }
+  } catch (err: unknown) {
+    console.log("ERROR WHEN UPDATE USRNAME");
+  }
+}
+export async function updateEmail(req: Request, res: Response) {
+  try {
+    const emailRegex: RegExp =
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const user =
+      emailRegex.test(req.body.newEmail) &&
+      (await UserModel.findOneAndUpdate(
+        { Email: req.body.Email },
+        { $set: { Email: req.body.newEmail } },
+        { new: true }
+      ));
+
+    if (user) {
+      console.log(`Email updated successfully for user with id ${user._id}.`);
+      return res.json({ user });
+    } else {
+      return res.json({ message: "Email not correct" });
+    }
+  } catch (err: unknown) {
+    console.log("ERROR WHEN UPDATE USRNAME");
+  }
+}
+
+export async function UpdatePassword(req: Request, res: Response) {
+  try {
+    const passwordregex: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    const user =
+      passwordregex.test(req.body.newPassword) &&
+      (await UserModel.findOneAndUpdate(
+        { Password: req.body.Password },
+        { $set: { Password: req.body.newPassword } },
+        { new: true }
+      ));
+
+    if (user) {
+      console.log(
+        `Password updated successfully for user with id ${user._id}.`
+      );
+      return res.json({ user });
+    } else {
+      return res.json({ message: "Passowrd not correct" });
+    }
+  } catch (err: unknown) {
+    console.log("ERROR WHEN UPDATE USRNAME");
+  }
+}

@@ -6,6 +6,7 @@ import WelcomeText from './SignInWelcomeText';
 import styles from './styles.module.scss';
 import { useAppDispatch } from '../../redux/hook';
 import { UserLogin } from '../../redux/slices/Auth';
+import { useNavigate } from 'react-router-dom';
 export interface SignInInputValues {
   UserName: string;
   Password: string;
@@ -16,14 +17,16 @@ const SignInPage: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<SignInInputValues>({ mode: 'onBlur' });
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<any> = async (data: SignInInputValues) => {
     const response = await dispatch(UserLogin(data));
     console.log('Пришли данные 123', response);
+    navigate('/Home');
   };
   return (
-    <form style={{ background: 'red' }} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.SignInContainer}>
         <div className={styles.SignInItems}>
           <WelcomeText />
@@ -32,7 +35,7 @@ const SignInPage: React.FC = () => {
 
           <SignInButton />
           <p className={styles.SignInNoAccount}>
-            <a style={{ textDecoration: 'none' }} href="*">
+            <a style={{ textDecoration: 'none' }} href="/Registration ">
               Dont have an account?
             </a>
           </p>

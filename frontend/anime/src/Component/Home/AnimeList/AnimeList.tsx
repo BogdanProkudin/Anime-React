@@ -34,6 +34,7 @@ const AnimeList: React.FC = () => {
                   <AnimeListSkeleton />
                 ) : (
                   <SliderItem
+                    isParallax={false}
                     index={index}
                     ImagesPoster={el.images.jpg.image_url}
                     ImagesTitle={el.title_english}

@@ -5,6 +5,7 @@ import { flushSync } from 'react-dom';
 import './styles.scss';
 import SliderItem from './SliderItem';
 import { useAppSelector } from '../../../redux/hook';
+import { useNavigate } from 'react-router-dom';
 const TWEEN_FACTOR = 1.2;
 
 type PropType = {
@@ -18,7 +19,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const [tweenValues, setTweenValues] = useState<number[]>([]);
-
+  const navigate = useNavigate();
   const onScroll = useCallback(() => {
     if (!emblaApi) return;
 
@@ -51,14 +52,21 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
     });
     emblaApi.on('reInit', onScroll);
   }, [emblaApi, onScroll]);
+  function handleChooseAnime(el: AnimeInfo) {
+    const AnimeTitle = el.title_english;
+    const AnimeImage = el.images.jpg.image_url;
+    console.log(AnimeTitle, 'title', AnimeImage, 'Image');
 
+    navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
+  }
   return (
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {slides.map((el: AnimeInfo, index) => (
-            <div className="embla__slide" key={index}>
+            <div onClick={() => handleChooseAnime(el)} className="embla__slide" key={index}>
               <SliderItem
+                isParallax={true}
                 ImagesPoster={el.images.jpg.image_url}
                 ImagesTitle={el.title}
                 AnimeGenres={el.genres[1]}

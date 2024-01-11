@@ -6,10 +6,10 @@ type WatchSectionProps = {
 };
 const WatchSection: React.FC<WatchSectionProps> = ({ animeLink }) => {
   return (
-    <div className={styles.watch_section_container}>
+    <>
       <InfoSection />
       <EpisodeVideo animeLink={animeLink} />
-    </div>
+    </>
   );
 };
 export default WatchSection;

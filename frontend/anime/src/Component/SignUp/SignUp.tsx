@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../redux/hook';
 import { UserRegistration } from '../../redux/slices/Auth';
 import FocusLock from 'react-focus-lock';
+import { useNavigate } from 'react-router-dom';
 
 export type InputValues = {
   UserName: string;
@@ -19,11 +20,12 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<InputValues>({ mode: 'onBlur' });
-
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<InputValues> = async (data: InputValues) => {
     const response = await dispatch(UserRegistration(data));
     console.log(response);
+    navigate('/LogIn');
   };
   return (
     <FocusLock disabled={true}>
@@ -52,7 +54,11 @@ const SignUpPage = () => {
 
             <SignUpButton />
             <p>
-              <a className={styles.SignUPHaveAccount} style={{ textDecoration: 'none' }} href="*">
+              <a
+                className={styles.SignUPHaveAccount}
+                style={{ textDecoration: 'none' }}
+                href="/LogIn"
+              >
                 Have account already?
               </a>
             </p>

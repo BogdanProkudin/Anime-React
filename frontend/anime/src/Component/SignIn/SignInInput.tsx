@@ -34,7 +34,7 @@ const SignInInput: React.FC<ISignInInput> = ({ placeholderText, type, register }
           />
         )}
       </div>
-      <span style={{ color: 'red' }}>error</span>
+      {/* <span style={{ color: 'red' }}>error</span> */}
     </div>
   );
 };
