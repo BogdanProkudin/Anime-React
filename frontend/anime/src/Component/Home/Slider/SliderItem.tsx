@@ -33,7 +33,6 @@ const SliderItem: React.FC<SliderItemProps> = ({
       {isSmallScreen && isParallax ? (
         <div className="embla__parallax">
           <div
-            className="embla__parallax__layer"
             style={{
               ...(tweenValues?.length && {
                 transform: `translateX(${tweenValues[index]}%)`,

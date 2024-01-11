@@ -8,6 +8,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 3 колонки */
   gap: 16px; /* Расстояние между элементами */
+  margin-bottom: 50px;
 }
 .pagination {
   display: flex;

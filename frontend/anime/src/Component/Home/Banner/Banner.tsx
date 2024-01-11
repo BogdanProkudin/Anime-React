@@ -6,7 +6,7 @@ import Slider from '../Slider/BigScreenSlider';
 import { EmblaOptionsType } from 'embla-carousel-react';
 import EmblaCarousel from '../Slider/SmallScreemSlider';
 import { useEffect, useState } from 'react';
-
+import { LuVideoOff } from 'react-icons/lu';
 import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
 import { useAppDispatch } from '../../../redux/hook';
 const BigBanner = () => {
@@ -85,7 +85,7 @@ const BigBanner = () => {
 
           <div className={styles.big_banner_text_container}>
             <h1 className={styles.big_banner_text_header_video}>Attack on Titan</h1>
-            <h1 onClick={handleOffVideo}>OFF VIDEO</h1>
+
             <p className={styles.big_banner_subtext_header_video}>
               Centuries ago, mankind was slaughtered to near
             </p>

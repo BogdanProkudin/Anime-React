@@ -1,6 +1,6 @@
 .embla {
   --slide-spacing: 1rem;
-  --slide-size: 48%;
+  --slide-size: 30%;
   --slide-height: 18rem;
   padding: 1.6rem;
 }
@@ -17,7 +17,7 @@
 }
 .embla__slide {
   flex: 0 0 var(--slide-size);
-
+  height: 300px;
   padding-left: var(--slide-spacing);
   position: relative;
 }
@@ -65,11 +65,12 @@
   width: 100%;
 }
 .embla__parallax__img {
-  width: 100%;
+  width: 250px;
   height: 300px;
 
   border-radius: 40px;
 }
+
 .small_screen_shadow {
   position: absolute;
   bottom: 65px;
@@ -81,9 +82,6 @@
 }
 
 @media screen and (max-width: 461px) {
-  .small_screen_shadow {
-    bottom: 20px;
-  }
   .embla__parallax__layer {
     max-height: 320px;
   }
