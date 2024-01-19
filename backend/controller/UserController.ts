@@ -36,6 +36,7 @@ export const Registration = async (req: Request, res: Response) => {
       Email: req.body.Email,
       UserName: req.body.UserName,
       Password: req.body.Password,
+      ToWatch: [],
     });
 
     const user = await doc.save();
@@ -72,26 +73,38 @@ export const LogIn = async (req: Request, res: Response) => {
 export async function updateNickname(req: Request, res: Response) {
   try {
     const usernameRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9_]{3,24}$/;
-    const user =
-      usernameRegex.test(req.body.newUserName) &&
-      (await UserModel.findOneAndUpdate(
-        { UserName: req.body.UserName },
-        { $set: { UserName: req.body.newUserName } },
-        { new: true }
-      ));
 
-    if (user) {
+    if (!usernameRegex.test(req.body.newUserName)) {
+      return res.json({ message: "Invalid UserName format" });
+    }
+
+    const existingUser = await UserModel.findOne({
+      UserName: req.body.newUserName,
+    });
+    if (existingUser) {
+      return res.json({ message: "UserName is already taken" });
+    }
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { UserName: req.body.UserName },
+      { $set: { UserName: req.body.newUserName } },
+      { new: true }
+    );
+
+    if (updatedUser) {
       console.log(
-        `Username updated successfully for user with id ${user._id}.`
+        `Username updated successfully for user with id ${updatedUser._id}.`
       );
-      return res.json({ user });
+      return res.json({ user: updatedUser });
     } else {
       return res.json({ message: "UserName not correct" });
     }
   } catch (err: unknown) {
-    console.log("ERROR WHEN UPDATE USRNAME");
+    console.error("ERROR WHEN UPDATING USERNAME", err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
 export async function updateEmail(req: Request, res: Response) {
   try {
     const emailRegex: RegExp =
@@ -136,5 +149,27 @@ export async function UpdatePassword(req: Request, res: Response) {
     }
   } catch (err: unknown) {
     console.log("ERROR WHEN UPDATE USRNAME");
+  }
+}
+
+export async function AddAnimeToWatch(req: Request, res: Response) {
+  try {
+    console.log(req.body);
+
+    const user = await UserModel.findOneAndUpdate(
+      { UserName: req.body.CurrentUser },
+      { $push: { ToWatch: req.body.ToWatch } }
+    );
+
+    if (user) {
+      console.log(
+        `To Watch updated successfully for user with id ${user._id}.`
+      );
+      return res.json({ user });
+    } else {
+      return res.json({ message: "To Watch Error " });
+    }
+  } catch (err: unknown) {
+    console.log("ERROR WHEN UPDATE To Watch");
   }
 }

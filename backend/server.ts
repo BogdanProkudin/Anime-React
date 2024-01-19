@@ -23,6 +23,7 @@ app.post("/LogIn", UserController.LogIn);
 app.post("/ChangeUserName", UserController.updateNickname);
 app.post("/ChangeEmail", UserController.updateEmail);
 app.post("/ChangePassword", UserController.UpdatePassword);
+app.post("/AddToWatch", UserController.AddAnimeToWatch);
 app.listen(3003, () => {
   try {
     return console.log("Server OK");

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import UserModelTypes from "../types/UserTypes";
-
+import { AnimeTypes } from "../types/UserTypes";
 const UserSchema = new mongoose.Schema<UserModelTypes>(
   {
     UserName: {
@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema<UserModelTypes>(
       type: String,
       required: true,
     },
+    ToWatch: [],
   },
 
   { timestamps: true }
