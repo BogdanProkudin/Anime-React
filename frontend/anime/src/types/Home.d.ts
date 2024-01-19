@@ -36,7 +36,7 @@ type TrailerInfo = {
   images: ImageInfo;
 };
 
-type AnimeInfo = {
+export type AnimeInfo = {
   airing: boolean;
   approved: boolean;
   background: null | string;
@@ -46,7 +46,7 @@ type AnimeInfo = {
   episodes: number;
   explicit_genres: string[];
   favorites: number;
-  genres: DemographicInfo[];
+  genres: DemographicInfo[] | string;
   images: { jpg: ImageInfo; webp: ImageInfo };
   licensors: ProducerInfo[];
   mal_id: number;
@@ -71,7 +71,7 @@ type AnimeInfo = {
   trailer: TrailerInfo;
   type: string;
   url: string;
-  year: number;
+  year: number | string;
 };
 
 interface AnimeSerial {

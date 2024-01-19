@@ -6,6 +6,7 @@ import './styles.scss';
 import SliderItem from './SliderItem';
 import { useAppSelector } from '../../../redux/hook';
 import { useNavigate } from 'react-router-dom';
+import { AnimeInfo } from '../../../types/Home';
 const TWEEN_FACTOR = 1.2;
 
 type PropType = {

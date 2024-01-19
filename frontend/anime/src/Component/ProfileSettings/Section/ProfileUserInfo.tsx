@@ -1,7 +1,7 @@
-import ProfileEmail from './ProfileEmail/ProfileEmail';
-import ProfilePassword from './ProfilePassword/ProfilePassword';
-import ProfileUserNameInfo from './ProfileUserName/ProfileUserName';
-import ProfileInfo from './ProfileUserName/ProfileUserName';
+import ProfileEmail from './ProfileInfo/ProfileEmail/ProfileEmail';
+import ProfilePassword from './ProfileInfo/ProfilePassword/ProfilePassword';
+import ProfileUserNameInfo from './ProfileInfo/ProfileUserName/ProfileUserName';
+import ProfileInfo from './ProfileInfo/ProfileUserName/ProfileUserName';
 
 const ProfileUserInfo = () => {
   return (

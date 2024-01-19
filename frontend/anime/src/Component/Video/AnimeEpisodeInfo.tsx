@@ -6,16 +6,36 @@ import { FaPlus } from 'react-icons/fa6';
 
 import { CiStar } from 'react-icons/ci';
 import { icons } from 'react-icons/lib';
-import { useAppSelector } from '../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import AnimeEpisodeImageSkeleton from './Skeletons/AnimeEpisodeSkeleton';
 import AnimeTitleSkeleton from './Skeletons/AnimeTitleSkeleton';
+import { sendAnimeToWatch } from '../../redux/slices/Anime';
+import { AnimeInfo } from '../../types/Home';
 type AnimeEpisodeInfo = {
-  AnimeImage: string | null;
+  AnimePoster: string | null;
   AnimeTitle: string | undefined;
 };
 
-const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimeImage, AnimeTitle }) => {
+const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimePoster, AnimeTitle }) => {
   const animeStatus = useAppSelector((state) => state.getAnime.animeStatus);
+  const AnimeInfo: AnimeInfo = useAppSelector((state) => state.getAnime.animeEpisode);
+  const storedUserString = localStorage.getItem('CurrentUser');
+  const storedUser = storedUserString !== null ? JSON.parse(storedUserString) : 'NOT FOUND';
+  console.log(AnimeInfo, 'QWGG');
+
+  const AddToWatchData = {
+    CurrentUser: storedUser.UserName,
+    ToWatch: {
+      AnimeTitle,
+      AnimePoster,
+      AnimeGenres:
+        animeStatus === 'finished' && AnimeInfo && AnimeInfo.genres
+          ? AnimeInfo.genres[1]
+          : 'Unknown',
+      AnimeYear: AnimeInfo ? AnimeInfo.year : 'Unknown',
+    },
+  };
+  const dispatch = useAppDispatch();
   const ButtonsList = [
     { text: 'Watching', icon: <FaRegEye className={`${styles.icon}`} color="white" /> },
     { text: 'To Watch', icon: <FaRegBookmark className={`${styles.icon}`} color="white" /> },
@@ -25,14 +45,20 @@ const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimeImage, AnimeTitle }
       icon: <FaPlus className={`${styles.icon}`} color="white" />,
     },
   ];
+  const AddAnimeToWatch = async (text: string) => {
+    if (text === 'To Watch') {
+      const response = await dispatch(sendAnimeToWatch(AddToWatchData));
+      console.log('RESPONSE FRO  TO WATCH', response);
+    }
+  };
   return (
     <div className={styles.anime_info_container}>
-      {animeStatus === 'pending' ? (
+      {animeStatus !== 'finished' || !AnimeInfo ? (
         <AnimeEpisodeImageSkeleton />
       ) : (
-        <img className={styles.anime_episode_image} src={`${AnimeImage}`} />
+        <img className={styles.anime_episode_image} src={`${AnimePoster}`} />
       )}
-      {animeStatus === 'pending' ? (
+      {animeStatus !== 'finished' || !AnimeInfo ? (
         <AnimeTitleSkeleton />
       ) : (
         <div className={styles.anime_info_text_container}>
@@ -43,7 +69,7 @@ const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimeImage, AnimeTitle }
           <div className={styles.anime_episode_conainer_button}>
             {ButtonsList.map((button: { text: string; width?: string | undefined; icon: any }) => {
               return (
-                <div key={button.text}>
+                <div onClick={() => AddAnimeToWatch(button.text)} key={button.text}>
                   <AnimeEpisodeButton text={button.text} icon={button.icon} width={button.width} />
                 </div>
               );

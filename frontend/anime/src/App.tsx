@@ -16,12 +16,11 @@ function App() {
     { path: '/LogIn', element: token ? <Navigate to="/Home" /> : <SignInPage /> },
     { path: '/Settings', element: <ProfileSetting /> },
     {
-      path: 'https://bogdanprokudin.github.io/Anime-React//Home',
-      element: token ? <HomePage /> : <Navigate to="/LogIn" />,
+      path: '/Home',
+      element: <HomePage />,
     },
-    { path: '/Video/:AnimeTitle', element: token ? <AnimeEpisode /> : <SignInPage /> },
-    { path: '/results/:AnimeTitle', element: token ? <AnimeSearchList /> : <SignInPage /> },
-     { path: '*', element: <HomePage />},
+    { path: '/Video/:AnimeTitle', element: <AnimeEpisode /> },
+    { path: '/results/:AnimeTitle', element: <AnimeSearchList /> },
   ];
   const routing = useRoutes(routes);
   return <div className="App">{routing}</div>;

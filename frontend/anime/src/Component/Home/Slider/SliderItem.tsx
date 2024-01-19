@@ -4,7 +4,8 @@ import './styles.scss';
 import styles from './styles.module.scss';
 import noPhoto from '../../icons/noimage.webp';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
-
+import { VscDebugStart } from 'react-icons/vsc';
+import { isString } from 'lodash';
 type AnimeGenresProps = {
   name: string;
 };
@@ -13,9 +14,10 @@ type SliderItemProps = {
   index: number;
   ImagesPoster: string;
   ImagesTitle: string;
-  AnimeGenres: AnimeGenresProps;
-  AnimeYear: number;
+  AnimeGenres: AnimeGenresProps | string;
+  AnimeYear: number | string;
   isParallax: boolean;
+  isBlur?: boolean;
 };
 const SliderItem: React.FC<SliderItemProps> = ({
   index,
@@ -25,6 +27,7 @@ const SliderItem: React.FC<SliderItemProps> = ({
   AnimeGenres,
   AnimeYear,
   isParallax,
+  isBlur,
 }) => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' });
 
@@ -47,29 +50,38 @@ const SliderItem: React.FC<SliderItemProps> = ({
             <div className={styles.slider_items_container}>
               <h1 className={styles.slider_item_title}>{ImagesTitle}</h1>;
               <span className={styles.slider_item_subtext}>
-                {AnimeYear},{AnimeGenres ? AnimeGenres.name : 'Unknown'}
+                {AnimeYear},{AnimeGenres && !isString(AnimeGenres) ? AnimeGenres.name : 'Unknown'}
               </span>
             </div>
             <div className={'small_screen_shadow'}></div>
           </div>
         </div>
       ) : (
-        <div className={styles.embla__slide}>
-          <div className={styles.embla_image_shadow_container} style={{ position: 'relative' }}>
-            <img
-              className={styles.embla__slide__img}
-              src={`${ImagesPoster ? ImagesPoster : noPhoto}`}
-              alt="Your alt text"
-            />
-            <div className={styles.poster_shadow}></div>
-          </div>
+        <div className={styles.embla_slide_container1}>
+          <div className={styles.embla__slide}>
+            <div className={styles.embla_image_shadow_container} style={{ position: 'relative' }}>
+              <img
+                className={styles.embla__slide__img}
+                src={`${ImagesPoster ? ImagesPoster : noPhoto}`}
+                alt="Your alt text"
+              />
 
-          <div className={styles.slider_items_container}>
-            <h1 className={styles.slider_item_title}>{ImagesTitle ? ImagesTitle : 'Unknown'}</h1>;
-            <span className={styles.slider_item_subtext}>
-              {AnimeYear ? AnimeYear : 'Unknown'},{AnimeGenres ? AnimeGenres.name : 'Unknown'}
-            </span>
+              <div className={styles.poster_shadow}></div>
+            </div>
+
+            <div className={styles.slider_items_container}>
+              <h1 className={styles.slider_item_title}>{ImagesTitle ? ImagesTitle : 'Unknown'}</h1>;
+              <span className={styles.slider_item_subtext}>
+                {AnimeYear ? AnimeYear : 'Unknown'},
+                {AnimeGenres && !isString(AnimeGenres) ? AnimeGenres.name : 'Unknown'}
+              </span>
+            </div>
           </div>
+          {isBlur && (
+            <div style={{ position: 'relative', zIndex: '999' }}>
+              <VscDebugStart className={styles.slider_play_button} />
+            </div>
+          )}
         </div>
       )}
     </>

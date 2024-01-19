@@ -7,15 +7,23 @@ import { debounce, flatMap } from 'lodash';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { getAnimeSearchSeriaThunk } from '../../../redux/slices/Anime';
 import { useNavigate } from 'react-router-dom';
-
+import { AnimeInfo } from '../../../types/Home';
+import { IoIosSearch } from 'react-icons/io';
 export interface Anime {
+  title_english: string;
+  images: { jpg: { image_url: string } };
   title: string;
+
   imageUrl: string;
   desc: string;
   year: number;
   type: string;
   duration: string;
 }
+type suggestionType = {
+  suggestion: { title_english: string; images: { jpg: { image_url: string } } };
+};
+
 const HeaderInputBigScreen: React.FC = () => {
   const [value, setValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Anime[] | string[]>([]);
@@ -72,8 +80,12 @@ const HeaderInputBigScreen: React.FC = () => {
     debouncedHandleInputChange(newValue);
   };
 
-  const onSuggestionSelected = async (_event: any, data: AnimeInfo | any) => {
-    if (data.suggestion !== 'Not Found') {
+  const onSuggestionSelected = async (_event: any, data: suggestionType) => {
+    if (
+      typeof data.suggestion !== 'string' &&
+      'title_english' in data.suggestion &&
+      'images' in data.suggestion
+    ) {
       const AnimeTitle = data.suggestion.title_english;
       setIsButtonOpen(false);
       const AnimeImage = data.suggestion.images ? data.suggestion.images.jpg.image_url : '';
@@ -81,7 +93,7 @@ const HeaderInputBigScreen: React.FC = () => {
     }
   };
   const inputProps: AutosuggestProps<Anime, any>['inputProps'] = {
-    placeholder: 'Search ...',
+    placeholder: `Search ... `,
     value: value,
     onChange: onChange,
     className: styles.header_input,
@@ -118,7 +130,7 @@ const HeaderInputBigScreen: React.FC = () => {
           onClick={ViewAllAnime}
           className={styles.header_button_view_all}
           style={{
-            display: suggestions.length > 1 ? 'block' : 'none',
+            display: suggestions.length > 3 ? 'block' : 'none',
           }}
         >
           View all results

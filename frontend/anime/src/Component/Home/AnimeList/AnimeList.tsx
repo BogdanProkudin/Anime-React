@@ -9,6 +9,7 @@ import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
 import ImageGrid from './SkeletonList';
 import { useNavigate } from 'react-router-dom';
 import AnimeListSkeleton from './SkeletonList';
+import { AnimeInfo } from '../../../types/Home';
 
 const AnimeList: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const AnimeList: React.FC = () => {
       <h1 style={{ color: 'white' }}>Most Popular</h1>
       <div className={styles.anime_items_container}>
         {AnimeItemsList ? (
-          AnimeItemsList.map((el: AnimeInfo, index) => {
+          AnimeItemsList.map((el: AnimeInfo, index: number) => {
             return (
               <div onClick={() => handleChooseAnime(el)} key={index}>
                 {AnimeLoadStatus === 'loading' || AnimeItemsList.length === 0 ? (

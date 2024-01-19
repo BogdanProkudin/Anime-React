@@ -19,18 +19,21 @@
 .pagination li {
   margin: 0 5px;
   display: inline-block;
+  cursor: pointer;
+  user-select: none;
 }
 
 .pagination a {
   text-decoration: none;
-  color: #333;
+  color: white;
   padding: 8px 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .pagination a:hover {
-  background-color: #eee;
+  background-color: white;
+  color: black;
 }
 
 .pagination .active a {

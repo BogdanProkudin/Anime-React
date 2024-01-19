@@ -7,14 +7,19 @@ import AnimeEpisodeDetails from './AnimeEpisodeDetails';
 import styles from './styles.module.scss';
 const InfoSection = () => {
   const animeStatus = useAppSelector((state) => state.getAnime.animeStatus);
+  const AnimeInfo = useAppSelector((state) => state.getAnime.animeEpisode);
   return (
     <div
-      style={{ alignItems: animeStatus === 'pending' ? 'center' : '' }}
+      style={{ alignItems: animeStatus === 'pending' || !AnimeInfo ? 'center' : '' }}
       className={styles.info_section_container}
     >
       {<AnimeEpisodeDetails />}
 
-      {animeStatus === 'pending' ? <AnimeDescSkeleton /> : <AnimeEpisodeDescription />}
+      {animeStatus !== 'finished' || !AnimeInfo ? (
+        <AnimeDescSkeleton />
+      ) : (
+        <AnimeEpisodeDescription />
+      )}
     </div>
   );
 };

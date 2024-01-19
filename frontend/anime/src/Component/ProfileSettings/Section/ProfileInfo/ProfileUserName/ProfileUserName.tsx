@@ -27,6 +27,10 @@ const ProfileUserNameInfo = () => {
               ? '120px'
               : isChangeUserName && isSmallScreen
               ? '160px'
+              : !isSmallScreen && ErrorUserName
+              ? '190px'
+              : ErrorUserName && isSmallScreen
+              ? '240px'
               : '',
         }}
         className={styles.profile_info_background_items}

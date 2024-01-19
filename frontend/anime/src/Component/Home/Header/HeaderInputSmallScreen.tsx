@@ -1,13 +1,21 @@
-import styles from './styles.module.scss';
-import stylesLoader from '../Search/styles.module.scss';
 import React, { FormEvent, useEffect, useState } from 'react';
-import Autosuggest, { AutosuggestProps, SuggestionsFetchRequestedParams } from 'react-autosuggest';
+import Autosuggest, {
+  AutosuggestProps,
+  SuggestionSelectedEventData,
+  SuggestionsFetchRequestedParams,
+} from 'react-autosuggest';
 import HeaderSearchItem from './HeaderSearchItem';
 import { debounce } from 'lodash';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import { getAnimeSearchSeriaThunk } from '../../../redux/slices/Anime';
 import { useNavigate } from 'react-router-dom';
+import { AnimeInfo } from '../../../types/Home';
+import styles from './styles.module.scss';
+import stylesLoader from '../Search/styles.module.scss';
+
 export interface Anime {
+  title_english: string;
+  images: { jpg: { image_url: string } };
   title: string;
   imageUrl: string;
   desc: string;
@@ -15,10 +23,16 @@ export interface Anime {
   type: string;
   duration: string;
 }
+
+type suggestionType = {
+  suggestion: { title_english: string; images: { jpg: { image_url: string } } };
+};
+
 const HeaderSmallScreenInput: React.FC = () => {
   const [value, setValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Anime[] | string[]>([]);
-  const [loading, setLoading] = useState(false); // Новое состояние для отслеживания загрузки
+  const [loading, setLoading] = useState(false);
+  const [isInputFocused, setInputFocused] = useState(false); // Новое состояние для отслеживания фокуса
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -26,7 +40,8 @@ const HeaderSmallScreenInput: React.FC = () => {
 
   useEffect(() => {
     setSuggestionsOpen(value.length > 0);
-  }, [value]);
+  }, [value, isInputFocused]);
+
   const debouncedHandleInputChange = React.useCallback(
     debounce(async (Inputvalue: string) => {
       setLoading(true);
@@ -34,7 +49,7 @@ const HeaderSmallScreenInput: React.FC = () => {
         const response = await dispatch(getAnimeSearchSeriaThunk({ title: Inputvalue }));
         console.log('ЗАПРОС ВЫПОЛНЕН');
         if (response.payload.length > 0) {
-          setSuggestions(response.payload.slice(0, 5));
+          setSuggestions(response.payload.slice(0, 3));
         } else {
           setSuggestions(['Not Found']);
         }
@@ -44,48 +59,56 @@ const HeaderSmallScreenInput: React.FC = () => {
     [],
   );
 
-  const getSuggestions = (): string => '';
+  const getSuggestions = (): Anime[] | any => suggestions;
 
-  const onSuggestionsFetchRequested = async ({ value }: SuggestionsFetchRequestedParams) => {};
-  const onChange = (
-    event: React.FormEvent<HTMLElement>,
-    { newValue }: Autosuggest.ChangeEvent,
-  ): void => {
+  const onSuggestionsFetchRequested = async ({ value }: SuggestionsFetchRequestedParams) => {
+    return suggestions;
+  };
+
+  const onChange = (event: React.FormEvent<HTMLElement>, { newValue }: Autosuggest.ChangeEvent) => {
     setValue(newValue);
     setLoading(true);
     setSuggestions(['pending']);
     debouncedHandleInputChange(newValue);
   };
 
-  const onSuggestionSelected = (_event: any, data: AnimeInfo | any) => {
-    if (data.suggestion !== 'Not Found') {
+  const onSuggestionSelected = (_event: any, data: suggestionType) => {
+    if (
+      typeof data.suggestion !== 'string' &&
+      'title_english' in data.suggestion &&
+      'images' in data.suggestion
+    ) {
       const AnimeTitle = data.suggestion.title_english;
-
       const AnimeImage = data.suggestion.images.jpg.image_url;
       navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
     }
   };
+
   const inputProps: AutosuggestProps<Anime, any>['inputProps'] = {
     placeholder: 'Search Anime ...',
     value: value,
     onChange: onChange,
     className: styles.header_small_screen_input,
+    onFocus: () => setInputFocused(true), // Обновляем состояние при фокусировке на инпуте
+    onBlur: () => setInputFocused(false), // Обновляем состояние при потере фокуса на инпуте
   };
+
   const ViewAllAnime = () => {
     const SearchItems = value;
     navigate(`/results/${SearchItems}`);
     console.log('clicked on btn');
-
     setSuggestions([]);
     setValue('');
   };
+  console.log(suggestions, 'SUGGEstion', isSuggestionsOpen, 'isOPEn');
 
   return (
     <div className={styles.header_small_screen_container}>
       <Autosuggest
         suggestions={suggestions as Anime[]}
-        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+        alwaysRenderSuggestions={value.length > 3 && true}
         getSuggestionValue={getSuggestions}
+        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
         renderSuggestion={(suggestion: Anime): React.ReactNode => {
           return isSuggestionsOpen && loading ? (
             <div className={stylesLoader.loader}>Loading...</div>
@@ -95,7 +118,6 @@ const HeaderSmallScreenInput: React.FC = () => {
         }}
         inputProps={inputProps}
         onSuggestionSelected={(e, data) => onSuggestionSelected(e, data)}
-        focusInputOnSuggestionClick={true}
         theme={{
           container: styles.autosuggest_small_screen_container,
           suggestionsContainer: styles.suggestions_container,
@@ -109,11 +131,11 @@ const HeaderSmallScreenInput: React.FC = () => {
         onClick={ViewAllAnime}
         className={styles.header_button_view_all}
         style={{
-          top: '490px',
+          top: '460px',
           position: 'absolute',
           left: '0',
           width: '100%',
-          display: suggestions.length > 1 ? 'block' : 'none',
+          display: suggestions.length >= 3 ? 'block' : 'none',
           zIndex: '999',
         }}
       >

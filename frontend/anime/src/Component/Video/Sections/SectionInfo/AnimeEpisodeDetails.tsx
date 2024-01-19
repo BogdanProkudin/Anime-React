@@ -2,39 +2,54 @@ import React from 'react';
 import { useAppSelector } from '../../../../redux/hook';
 import styles from './styles.module.scss';
 import AnimeInfoSkeleton from '../../Skeletons/AnimeInfoSkeleton';
+import { AnimeInfo } from '../../../../types/Home';
 const AnimeEpisodeDetails = () => {
-  const AnimeInfo = useAppSelector((state) => state.getAnime.animeEpisode) as AnimeInfo;
+  const AnimeInfo: AnimeInfo = useAppSelector((state) => state.getAnime.animeEpisode);
+
   const animeStatus = useAppSelector((state) => state.getAnime.animeStatus);
   const AnimeDetails = [
-    { title: 'Type', prop: AnimeInfo.type ? AnimeInfo.type : 'Unknown from Api' },
-    { title: 'Episode', prop: AnimeInfo.episodes ? AnimeInfo.episodes : 'Unknown from Api' },
+    { title: 'Type', prop: AnimeInfo ? AnimeInfo.type : 'Unknown from Api' },
+    { title: 'Episode', prop: AnimeInfo ? AnimeInfo.episodes : 'Unknown from Api' },
     {
       title: 'Genres',
-      prop: Array.isArray(AnimeInfo.genres)
-        ? AnimeInfo.genres.map((el) => {
-            return el.name;
-          })
-        : AnimeInfo.genres,
+      prop:
+        animeStatus === 'finished' && AnimeInfo && Array.isArray(AnimeInfo.genres)
+          ? AnimeInfo.genres.map((el) => {
+              return el.name;
+            })
+          : 'Unknown',
     },
-    { title: 'Season', prop: AnimeInfo.season ? AnimeInfo.season : 'Unknown from Api' },
+    { title: 'Season', prop: AnimeInfo ? AnimeInfo.season : 'Unknown from Api' },
     {
       title: 'Studios',
-      prop: Array.isArray(AnimeInfo.studios) ? AnimeInfo.studios[0].name : AnimeInfo.studios,
+      prop:
+        animeStatus === 'finished' &&
+        AnimeInfo &&
+        Array.isArray(AnimeInfo.studios) &&
+        AnimeInfo.studios[0]
+          ? AnimeInfo.studios[0].name
+          : 'unknown',
     },
-    { title: 'Source', prop: AnimeInfo.source ? AnimeInfo.source : 'Unknown from Api' },
-    { title: 'Duration', prop: AnimeInfo.duration ? AnimeInfo.duration : 'Unknown from Api' },
+    { title: 'Source', prop: AnimeInfo ? AnimeInfo.source : 'Unknown from Api' },
+    { title: 'Duration', prop: AnimeInfo ? AnimeInfo.duration : 'Unknown from Api' },
   ];
 
   return (
     <div className={styles.anime_info_details_container}>
-      {animeStatus !== 'pending' && <h1 className={styles.anime_info_details_title}>Details</h1>}
-      {AnimeDetails.map((section: any) => {
+      {animeStatus !== 'pending' && AnimeInfo && (
+        <h1 className={styles.anime_info_details_title}>Details</h1>
+      )}
+      {AnimeDetails.map((section: any, index: number) => {
         return (
-          <>
-            {animeStatus === 'pending' ? (
+          <div key={index}>
+            {animeStatus !== 'finished' || !AnimeInfo ? (
               <div key={section.title} style={{ display: 'flex', flexDirection: 'column' }}>
-                {[...new Array(1)].map((_) => {
-                  return <AnimeInfoSkeleton />;
+                {[...new Array(1)].map((_, index) => {
+                  return (
+                    <div key={index}>
+                      <AnimeInfoSkeleton />
+                    </div>
+                  );
                 })}
               </div>
             ) : (
@@ -54,7 +69,7 @@ const AnimeEpisodeDetails = () => {
                 )}
               </div>
             )}
-          </>
+          </div>
         );
       })}
     </div>

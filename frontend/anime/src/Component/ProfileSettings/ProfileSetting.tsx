@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import Header from '../Home/Header/Header';
 import styles from './styles.module.scss';
 import ProfileSettingVariant from './ProfileSettiingVariant';
-import ProfileInfo from './Section/ProfileUserName/ProfileUserName';
+import ProfileInfo from './Section/ProfileInfo/ProfileUserName/ProfileUserName';
 import { Sidebar, Menu, MenuItem, SubMenu, sidebarClasses } from 'react-pro-sidebar';
 import ProfileUserInfo from './Section/ProfileUserInfo';
+import ProfileToWatch from './Section/ProfileToWatch/ProfileToWatch';
 const ProfileSetting = () => {
   const [selectedTab, setSelectedTab] = useState<string>('');
   const Variants = ['Profile Info', 'To Watch', 'Collection'];
@@ -40,6 +41,7 @@ const ProfileSetting = () => {
         </div>
       </div>
       {selectedTab === 'Profile Info' && <ProfileUserInfo />}
+      {selectedTab === 'To Watch' && <ProfileToWatch />}
     </div>
   );
 };

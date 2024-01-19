@@ -8,6 +8,7 @@ import { useMediaQuery } from 'react-responsive';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import HeaderInputSmallScreen from './HeaderInputSmallScreen';
+import { IoIosSearch } from 'react-icons/io';
 const Header = () => {
   const navigate = useNavigate();
 
@@ -23,7 +24,17 @@ const Header = () => {
           AnimePro
         </h1>
 
-        {isSmallScreen && <HeaderBigScreenInput />}
+        {isSmallScreen && (
+          <div style={{ display: 'flex', position: 'relative' }}>
+            <HeaderBigScreenInput />
+            {
+              <IoIosSearch
+                color="white"
+                style={{ position: 'absolute', right: '5px', top: '0.5rem' }}
+              />
+            }
+          </div>
+        )}
         {isSearchOpen && !isSmallScreen && <HeaderInputSmallScreen />}
         <div className={styles.header_button_container}>
           {!isSmallScreen && (

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import EpisodeVideo from './EpisodeVideo';
+
 import AnimeEpisodeInfo from './AnimeEpisodeInfo';
-import styles from './styles.module.scss';
 
 import { useAppDispatch } from '../../redux/hook';
 import { getAnimeSeriaLinkThunk, getAnimeSeriaThunk } from '../../redux/slices/Anime';
@@ -29,20 +28,19 @@ const AnimeEpisode = () => {
         full_match: true,
         limit: 1,
       };
-      const response1 = await dispatch(getAnimeSeriaThunk(paramsForInfo));
+      const responseForInfo = await dispatch(getAnimeSeriaThunk(paramsForInfo));
 
       const paramsForLink = {
         token: ApiToken,
         title: AnimeTitle,
-        title_orig: response1.payload.title_japanese,
+        title_orig: responseForInfo.payload ? responseForInfo.payload.title_japanese : 'Unknown',
         full_match: true,
         limit: 1,
       };
-      const response = await dispatch(getAnimeSeriaLinkThunk(paramsForLink));
-      console.log(response, 'REG');
+      const responseForLink = await dispatch(getAnimeSeriaLinkThunk(paramsForLink));
 
-      setAnimeLink(response.payload.length > 0 ? response.payload[0].link : '');
-      setAnimeTrailer(response1.payload.trailer ? response1.payload.trailer.embed_url : '');
+      setAnimeLink(responseForLink.payload.length > 0 ? responseForLink.payload[0].link : '');
+      setAnimeTrailer(responseForInfo.payload ? responseForInfo.payload.trailer.embed_url : '');
     };
     getAnimeInfo();
     window.scrollTo(0, 0);
@@ -51,7 +49,7 @@ const AnimeEpisode = () => {
   return (
     <div style={{ maxHeight: '100px' }}>
       <Header />
-      {<AnimeEpisodeInfo AnimeTitle={AnimeTitle} AnimeImage={animeImage} />}
+      {<AnimeEpisodeInfo AnimeTitle={AnimeTitle} AnimePoster={animeImage} />}
       <WatchSection animeLink={animeLink.length === 0 ? animeTrailer : animeLink} />
     </div>
   );

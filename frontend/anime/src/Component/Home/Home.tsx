@@ -5,7 +5,7 @@ import Header from './Header/Header';
 import Collection from './Collection/Collection';
 import { EmblaOptionsType } from 'embla-carousel-react';
 import Slider from './Slider/BigScreenSlider';
-
+import { useEffect } from 'react';
 import AnimeList from './AnimeList/AnimeList';
 import EmblaCarousel from './Slider/SmallScreemSlider';
 import { useMediaQuery } from 'react-responsive';
@@ -21,17 +21,13 @@ const HomePage = () => {
     <div style={{ maxWidth: '100vw' }}>
       <div className={styles.Home_Container}>
         <Header />
-
         <BigBanner />
-
         {isSmallScreen ? (
           <EmblaCarousel options={OPTIONSSmallScreen} />
         ) : (
           <Slider options={OPTIONSSmallScreen} />
         )}
         <Collection />
-        {/* <Slider slides={SLIDES} options={OPTIONS} /> */}
-
         <AnimeList />
       </div>
       <h1>qweqwe</h1>

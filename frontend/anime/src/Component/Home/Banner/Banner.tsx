@@ -9,11 +9,12 @@ import { useEffect, useState } from 'react';
 import { LuVideoOff } from 'react-icons/lu';
 import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
 import { useAppDispatch } from '../../../redux/hook';
+import { useNavigate } from 'react-router-dom';
 const BigBanner = () => {
   const isSmallScreen = useMediaQuery({ query: '(max-width: 767px)' });
   const isPhoneScreen = useMediaQuery({ query: '(max-width: 500px)' });
   const [videoError, setVideoError] = useState(false);
-
+  const navigate = useNavigate();
   const handleVideoError = () => {
     setVideoError(true);
   };
@@ -21,9 +22,7 @@ const BigBanner = () => {
     setVideoError(!videoError);
   };
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getAnimeSliderThunk());
-  }, []);
+
   return (
     <div className={styles.Big_Banner}>
       {isSmallScreen ? (
@@ -40,7 +39,13 @@ const BigBanner = () => {
                   <span className={styles.separator}>|</span>
                   <span className={styles.small_screen_info}>Drama,Movies,Gay</span>
                 </p>
-                <div>
+                <div
+                  onClick={() =>
+                    navigate(
+                      '/Video/Attack%20on%20Titan?image=https://cdn.myanimelist.net/images/anime/10/47347.jpg',
+                    )
+                  }
+                >
                   <HomeButton
                     colorText="black"
                     placeholderText="Learn More"
@@ -91,7 +96,19 @@ const BigBanner = () => {
             </p>
 
             <div className={styles.BannerButton_Container}>
-              <HomeButton colorText="black" placeholderText="Learn More" backgroundColor="white" />
+              <div
+                onClick={() =>
+                  navigate(
+                    '/Video/Attack%20on%20Titan?image=https://cdn.myanimelist.net/images/anime/10/47347.jpg',
+                  )
+                }
+              >
+                <HomeButton
+                  colorText="black"
+                  placeholderText="Learn More"
+                  backgroundColor="white"
+                />
+              </div>
               <HomeButton colorText="white" placeholderText="To Watch" backgroundColor="black" />
             </div>
           </div>
