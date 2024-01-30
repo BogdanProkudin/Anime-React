@@ -35,7 +35,9 @@ const Header = () => {
             }
           </div>
         )}
-        {isSearchOpen && !isSmallScreen && <HeaderInputSmallScreen />}
+        {isSearchOpen && !isSmallScreen && (
+          <HeaderInputSmallScreen setIsSearchOpen={setIsSearchOpen} />
+        )}
         <div className={styles.header_button_container}>
           {!isSmallScreen && (
             <FaMagnifyingGlass onClick={() => setIsSearchOpen(!isSearchOpen)} color="grey" />

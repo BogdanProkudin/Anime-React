@@ -8,7 +8,6 @@ interface HeaderSearchItemProps {
 const HeaderSearchItem: React.FC<HeaderSearchItemProps> = ({ suggestion }) => {
   const isSmallScreen = useMediaQuery({ query: '(min-width:683px)' });
   const status = useAppSelector((state) => state.getAnime.animeStatus);
-  console.log('STATUS', status);
 
   return (
     <>
@@ -21,7 +20,7 @@ const HeaderSearchItem: React.FC<HeaderSearchItemProps> = ({ suggestion }) => {
           />
           <div className={styles.suggestion_item_info_container}>
             <span className={styles.suggestion_title}>
-              {suggestion.title_english ? suggestion.title_english : '-'}
+              {suggestion.title_english ? suggestion.title_english : suggestion.title}
             </span>
             <span className={styles.suggestion_item_info_desc}>
               {suggestion.synopsis ? suggestion.synopsis : '-'}

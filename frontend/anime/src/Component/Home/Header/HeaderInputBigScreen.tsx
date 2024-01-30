@@ -21,7 +21,7 @@ export interface Anime {
   duration: string;
 }
 type suggestionType = {
-  suggestion: { title_english: string; images: { jpg: { image_url: string } } };
+  suggestion: { title_english: string; images: { jpg: { image_url: string } }; title: string };
 };
 
 const HeaderInputBigScreen: React.FC = () => {
@@ -42,7 +42,7 @@ const HeaderInputBigScreen: React.FC = () => {
       setLoading(true);
       if (Inputvalue.length > 3) {
         const response = await dispatch(getAnimeSearchSeriaThunk({ title: Inputvalue }));
-        console.log('ЗАПРОС ВЫПОЛНЕН');
+
         if (response.payload.length > 0) {
           setSuggestions(response.payload.slice(0, 5));
           if (response.payload.length > 5) {
@@ -59,8 +59,8 @@ const HeaderInputBigScreen: React.FC = () => {
   );
   const ViewAllAnime = () => {
     const SearchItems = value;
-    navigate(`/results/${SearchItems}`);
-    console.log('clicked on btn');
+    navigate(`/Search/results/${SearchItems}`);
+
     setIsButtonOpen(false);
     setSuggestions([]);
     setValue('');
@@ -86,7 +86,9 @@ const HeaderInputBigScreen: React.FC = () => {
       'title_english' in data.suggestion &&
       'images' in data.suggestion
     ) {
-      const AnimeTitle = data.suggestion.title_english;
+      const AnimeTitle = data.suggestion.title_english
+        ? data.suggestion.title_english
+        : data.suggestion.title;
       setIsButtonOpen(false);
       const AnimeImage = data.suggestion.images ? data.suggestion.images.jpg.image_url : '';
       navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);

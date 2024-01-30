@@ -13,7 +13,7 @@
   display: flex;
   margin-top: 5%;
   touch-action: pan-y;
-  margin-left: calc(var(--slide-spacing) * -1);
+  gap: 5px;
 }
 .embla__slide {
   flex: 0 0 var(--slide-size);
@@ -68,7 +68,7 @@
   width: 250px;
   height: 300px;
 
-  border-radius: 40px;
+  border-radius: 30px;
 }
 
 .small_screen_shadow {
@@ -86,9 +86,22 @@
     max-height: 320px;
   }
   .embla__parallax__img {
-    width: 200px;
-    height: 300px;
-
+    width: 170px;
+    height: 252px;
     border-radius: 40px;
+  }
+  .embla__parallax {
+    height: 253px;
+  }
+}
+
+@media screen and (max-width: 351px) {
+  .embla__parallax__img {
+    width: 134px;
+    height: 191px;
+    border-radius: 20px;
+  }
+  .embla__parallax {
+    height: 190px;
   }
 }

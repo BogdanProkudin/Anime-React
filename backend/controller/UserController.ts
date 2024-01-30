@@ -154,22 +154,100 @@ export async function UpdatePassword(req: Request, res: Response) {
 
 export async function AddAnimeToWatch(req: Request, res: Response) {
   try {
-    console.log(req.body);
+    const { CurrentUser, ToWatch } = req.body;
 
-    const user = await UserModel.findOneAndUpdate(
-      { UserName: req.body.CurrentUser },
-      { $push: { ToWatch: req.body.ToWatch } }
-    );
+    // Проверка, есть ли аниме уже в списке To Watch
+    const user = await UserModel.findOne({
+      UserName: CurrentUser,
+      ToWatch: ToWatch,
+    });
 
     if (user) {
       console.log(
-        `To Watch updated successfully for user with id ${user._id}.`
+        `Anime "${ToWatch}" already exists in To Watch list for user with id ${user._id}.`
       );
-      return res.json({ user });
+      return res.json({ message: "Anime already in To Watch list" });
+    }
+
+    // Если аниме еще нет в списке, добавляем его
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { UserName: CurrentUser },
+      { $push: { ToWatch: ToWatch } },
+      { new: true } // Чтобы получить обновленный документ
+    );
+
+    if (updatedUser) {
+      console.log(
+        `Anime "${ToWatch}" added to To Watch list for user with id ${updatedUser._id}.`
+      );
+      return res.json({ user: updatedUser });
     } else {
-      return res.json({ message: "To Watch Error " });
+      return res.json({ message: "To Watch Error" });
     }
   } catch (err: unknown) {
-    console.log("ERROR WHEN UPDATE To Watch");
+    console.error("ERROR WHEN UPDATING To Watch:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export async function CheckIsToWatch(req: Request, res: Response) {
+  try {
+    const animeTitle = req.query.animeTitle as string;
+    const userName = req.query.userName as string;
+    console.log(animeTitle, "qqq");
+
+    // Проверка, есть ли аниме в списке To Watch
+    const user = await UserModel.findOne({
+      UserName: userName,
+      "ToWatch.AnimeTitle": animeTitle,
+    });
+    console.log(user);
+
+    const isInToWatchList = Boolean(user);
+
+    res.json({ isInToWatchList });
+  } catch (error) {
+    console.error("Error checking anime in To Watch list:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+export async function RemoveFromToWatch(req: Request, res: Response) {
+  try {
+    const { userName, animeTitle } = req.body;
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      { UserName: userName },
+      { $pull: { ToWatch: { AnimeTitle: animeTitle } } },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      console.log(
+        `Anime "${animeTitle}" removed from To Watch list for user with id ${updatedUser._id}.`
+      );
+      return res.json({ user: updatedUser });
+    } else {
+      return res.json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error removing anime from To Watch list:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export async function getToWatchAnime(req: Request, res: Response) {
+  try {
+    const userName = req.query.username;
+
+    const user = await UserModel.findOne({ UserName: userName });
+
+    if (user) {
+      return res.json({ toWatch: user.ToWatch });
+    } else {
+      return res.json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error get Anime from  Watch list:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }

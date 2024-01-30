@@ -1,5 +1,5 @@
 import { useMediaQuery } from 'react-responsive';
-import { useAppSelector } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import SliderItem from '../Slider/SliderItem';
 import Pagination from './Pagination';
 import styles from './styles.module.scss';
@@ -16,10 +16,11 @@ const AnimeList: React.FC = () => {
   const AnimeItemsList = useAppSelector((state) => state.getAnime.animeList);
   const AnimeLoadStatus = useAppSelector((state) => state.getAnime.animeStatus);
   const AnimeContainerRef = useRef<HTMLDivElement>(null);
+  const hasDataLoaded = localStorage.getItem('hasDataLoaded09');
+  const storedListData = hasDataLoaded !== null ? JSON.parse(hasDataLoaded) : [];
   function handleChooseAnime(el: AnimeInfo) {
-    const AnimeTitle = el.title_english;
+    const AnimeTitle = el.title_english ? el.title_english : el.title;
     const AnimeImage = el.images.jpg.image_url;
-    console.log(AnimeTitle, 'title', AnimeImage, 'Image');
 
     navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
   }
@@ -27,37 +28,28 @@ const AnimeList: React.FC = () => {
     <div ref={AnimeContainerRef} className={styles.anime_list_container}>
       <h1 style={{ color: 'white' }}>Most Popular</h1>
       <div className={styles.anime_items_container}>
-        {AnimeItemsList ? (
-          AnimeItemsList.map((el: AnimeInfo, index: number) => {
-            return (
-              <div onClick={() => handleChooseAnime(el)} key={index}>
-                {AnimeLoadStatus === 'loading' || AnimeItemsList.length === 0 ? (
-                  <AnimeListSkeleton />
-                ) : (
-                  <SliderItem
-                    isParallax={false}
-                    index={index}
-                    ImagesPoster={el.images.jpg.image_url}
-                    ImagesTitle={el.title_english}
-                    AnimeGenres={el.genres[1]}
-                    AnimeYear={el.year}
-                  />
-                )}
-              </div>
-            );
-          })
-        ) : (
-          <h1
-            style={{
-              color: 'red',
-              fontSize: '20px',
-              marginLeft: '20rem',
-              width: '440px',
-            }}
-          >
-            Slow Down. Now you can choose next Page
-          </h1>
-        )}
+        {AnimeItemsList
+          ? AnimeItemsList.map((el: AnimeInfo, index: number) => {
+              return (
+                <div onClick={() => handleChooseAnime(el)} key={index}>
+                  {AnimeLoadStatus === 'loading' || AnimeItemsList.length === 0 ? (
+                    <AnimeListSkeleton />
+                  ) : (
+                    <SliderItem
+                      isParallax={false}
+                      index={index}
+                      ImagesPoster={el.images.jpg.image_url}
+                      ImagesTitle={el.title_english ? el.title_english : el.title}
+                      AnimeGenres={el.genres[1]}
+                      AnimeYear={el.year}
+                    />
+                  )}
+                </div>
+              );
+            })
+          : [...new Array(15)].map(() => {
+              return <AnimeListSkeleton />;
+            })}
       </div>
       <Pagination AnimeContainerRef={AnimeContainerRef} />
     </div>

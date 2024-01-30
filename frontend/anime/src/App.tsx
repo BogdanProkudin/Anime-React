@@ -6,6 +6,7 @@ import EpisodeVideo from './Component/Video/EpisodeVideo';
 import AnimeEpisode from './Component/Video/AnimeEpisode';
 import ProfileSetting from './Component/ProfileSettings/ProfileSetting';
 import AnimeSearchList from './Component/AnimeSearchList/AnimeSearchList';
+import AnimeGenresList from './Component/AnimeGenresList/AnimeGenresList';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -20,7 +21,8 @@ function App() {
       element: <HomePage />,
     },
     { path: '/Video/:AnimeTitle', element: <AnimeEpisode /> },
-    { path: '/results/:AnimeTitle', element: <AnimeSearchList /> },
+    { path: '/Search/results/:AnimeTitle', element: <AnimeSearchList /> },
+    { path: '/Genres/results/:AnimeGenres', element: <AnimeGenresList /> },
   ];
   const routing = useRoutes(routes);
   return <div className="App">{routing}</div>;

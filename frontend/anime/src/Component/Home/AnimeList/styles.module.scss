@@ -41,7 +41,7 @@
   color: #fff;
 }
 .hidden_next_button {
-  visibility: hidden;
+  display: none;
 }
 @media screen and (max-width: 1200px) {
   .anime_items_container {
@@ -57,10 +57,12 @@
   .anime_items_container {
     grid-template-columns: repeat(2, 1fr); /* 3 колонки */
   }
+  .pagination a:hover {
+  }
 }
 
-@media screen and (max-width: 461px) {
+@media screen and (max-width: 475px) {
   .anime_items_container {
-    grid-template-columns: repeat(1, 1fr); /* 3 колонки */
+    gap: 7px;
   }
 }

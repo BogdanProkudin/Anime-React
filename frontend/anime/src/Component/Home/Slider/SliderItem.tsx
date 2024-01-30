@@ -42,46 +42,42 @@ const SliderItem: React.FC<SliderItemProps> = ({
               }),
             }}
           >
-            <img
-              className="embla__slide__img embla__parallax__img"
-              src={`${ImagesPoster}`}
-              alt="Your alt text"
-            />
+            <div className={styles.embla_image_shadow_container} style={{ position: 'relative' }}>
+              <img
+                className="embla__slide__img embla__parallax__img"
+                src={`${ImagesPoster}`}
+                alt="Your alt text"
+              />
+
+              <div style={{ bottom: '0px' }} className={styles.poster_shadow}></div>
+            </div>
             <div className={styles.slider_items_container}>
               <h1 className={styles.slider_item_title}>{ImagesTitle}</h1>;
               <span className={styles.slider_item_subtext}>
                 {AnimeYear},{AnimeGenres && !isString(AnimeGenres) ? AnimeGenres.name : 'Unknown'}
               </span>
             </div>
-            <div className={'small_screen_shadow'}></div>
           </div>
         </div>
       ) : (
-        <div className={styles.embla_slide_container1}>
-          <div className={styles.embla__slide}>
-            <div className={styles.embla_image_shadow_container} style={{ position: 'relative' }}>
-              <img
-                className={styles.embla__slide__img}
-                src={`${ImagesPoster ? ImagesPoster : noPhoto}`}
-                alt="Your alt text"
-              />
+        <div className={styles.embla__slide}>
+          <div className={styles.embla_image_shadow_container} style={{ position: 'relative' }}>
+            <img
+              className={styles.embla__slide__img}
+              src={`${ImagesPoster ? ImagesPoster : noPhoto}`}
+              alt="Your alt text"
+            />
 
-              <div className={styles.poster_shadow}></div>
-            </div>
-
-            <div className={styles.slider_items_container}>
-              <h1 className={styles.slider_item_title}>{ImagesTitle ? ImagesTitle : 'Unknown'}</h1>;
-              <span className={styles.slider_item_subtext}>
-                {AnimeYear ? AnimeYear : 'Unknown'},
-                {AnimeGenres && !isString(AnimeGenres) ? AnimeGenres.name : 'Unknown'}
-              </span>
-            </div>
+            <div className={styles.poster_shadow}></div>
           </div>
-          {isBlur && (
-            <div style={{ position: 'relative', zIndex: '999' }}>
-              <VscDebugStart className={styles.slider_play_button} />
-            </div>
-          )}
+
+          <div className={styles.slider_items_container}>
+            <h1 className={styles.slider_item_title}>{ImagesTitle ? ImagesTitle : 'Unknown'}</h1>;
+            <span className={styles.slider_item_subtext}>
+              {AnimeYear ? AnimeYear : 'Unknown'},
+              {AnimeGenres && !isString(AnimeGenres) ? AnimeGenres.name : 'Unknown'}
+            </span>
+          </div>
         </div>
       )}
     </>

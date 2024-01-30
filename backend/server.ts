@@ -24,6 +24,9 @@ app.post("/ChangeUserName", UserController.updateNickname);
 app.post("/ChangeEmail", UserController.updateEmail);
 app.post("/ChangePassword", UserController.UpdatePassword);
 app.post("/AddToWatch", UserController.AddAnimeToWatch);
+app.get("/CheckIsToWatch", UserController.CheckIsToWatch);
+app.put("/RemoveFromToWatch", UserController.RemoveFromToWatch);
+app.get("/getToWatchAnime", UserController.getToWatchAnime);
 app.listen(3003, () => {
   try {
     return console.log("Server OK");

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AnimeInfo } from '../../types/Home';
+import { isString } from 'lodash';
 
 type AnimeSearchParams = {
   token?: string;
@@ -31,6 +32,7 @@ type initialStateProps = {
   animeEpisode: AnimeInfo;
   animeSearched: AnimeInfo[];
   animeList: AnimeInfo[];
+  animeGenresList: AnimeInfo[] | undefined;
   animeSearchInput: string;
   animeSliderStatus: string;
 };
@@ -40,6 +42,7 @@ const initialState: initialStateProps = {
   animeSliderStatus: '',
   animeLinkStatus: '',
   animeSlider: [],
+
   animeEpisode: {
     airing: false,
     approved: false,
@@ -103,6 +106,7 @@ const initialState: initialStateProps = {
   },
   animeSearched: [],
   animeList: [],
+  animeGenresList: [],
   animeSearchInput: '',
 };
 
@@ -113,7 +117,7 @@ export const getAnimeSliderThunk = createAsyncThunk(
       const response = await axios.get('https://api.jikan.moe/v4/top/anime?filter=bypopularity', {
         params: {
           page: 1,
-          limit: 9,
+          limit: 12,
         },
       });
 
@@ -214,6 +218,46 @@ export const getAnimeListThunk = createAsyncThunk(
     }
   },
 );
+export const getAnimeGenresListThunk = createAsyncThunk(
+  'getAnime/getAnimeGenresDataList',
+  async function ({ page, genresName }: { page: number; genresName: string }) {
+    try {
+      // Получаем данные с двух страниц
+      const responsePage1 = await axios.get('https://api.jikan.moe/v4/top/anime', {
+        params: {
+          filter: 'bypopularity',
+          page: page * 2,
+        },
+      });
+
+      const responsePage2 = await axios.get('https://api.jikan.moe/v4/top/anime', {
+        params: {
+          filter: 'bypopularity',
+          page: page === 1 ? page * 2 + 1 : page * 2 - 1,
+        },
+      });
+      console.log(page, 'PAGE');
+
+      const combinedAnime = [...responsePage1.data.data, ...responsePage2.data.data];
+
+      const adventureAnime = combinedAnime.filter((anime: AnimeInfo) => {
+        return (
+          !isString(anime.genres) &&
+          anime.genres.some(
+            (genre) => genre.name.toLocaleLowerCase() === genresName.toLocaleLowerCase(),
+          )
+        );
+      });
+
+      // Ограничиваем количество результатов до 20
+      if (adventureAnime.length > 0) {
+        return adventureAnime;
+      }
+    } catch (err) {
+      console.log('ERROR WHEN FETCHING AnimeData :', err);
+    }
+  },
+);
 
 const AnimeSlice = createSlice({
   name: 'Anime',
@@ -275,6 +319,16 @@ const AnimeSlice = createSlice({
       state.animeStatus = 'finished';
     });
 
+    builder
+      .addCase(getAnimeGenresListThunk.pending, (state, action) => {
+        state.animeGenresList = [];
+      })
+      .addCase(getAnimeGenresListThunk.fulfilled, (state, action) => {
+        state.animeGenresList = action.payload;
+      })
+      .addCase(getAnimeGenresListThunk.rejected, (state, action) => {
+        state.animeGenresList = [];
+      });
     // ... Другие case-блоки для thunk-функций ...
   },
 });

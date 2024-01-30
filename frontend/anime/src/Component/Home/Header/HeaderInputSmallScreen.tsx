@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { Dispatch, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import Autosuggest, {
   AutosuggestProps,
   SuggestionSelectedEventData,
@@ -27,8 +27,10 @@ export interface Anime {
 type suggestionType = {
   suggestion: { title_english: string; images: { jpg: { image_url: string } } };
 };
-
-const HeaderSmallScreenInput: React.FC = () => {
+type HeaderSmallScreenInputProps = {
+  setIsSearchOpen: Dispatch<SetStateAction<boolean>>;
+};
+const HeaderSmallScreenInput: React.FC<HeaderSmallScreenInputProps> = ({ setIsSearchOpen }) => {
   const [value, setValue] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Anime[] | string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +49,7 @@ const HeaderSmallScreenInput: React.FC = () => {
       setLoading(true);
       if (Inputvalue.length > 3) {
         const response = await dispatch(getAnimeSearchSeriaThunk({ title: Inputvalue }));
-        console.log('ЗАПРОС ВЫПОЛНЕН');
+
         if (response.payload.length > 0) {
           setSuggestions(response.payload.slice(0, 3));
         } else {
@@ -95,12 +97,12 @@ const HeaderSmallScreenInput: React.FC = () => {
 
   const ViewAllAnime = () => {
     const SearchItems = value;
-    navigate(`/results/${SearchItems}`);
-    console.log('clicked on btn');
+    navigate(`/Search/results/${SearchItems}`);
+
     setSuggestions([]);
     setValue('');
+    setIsSearchOpen(false);
   };
-  console.log(suggestions, 'SUGGEstion', isSuggestionsOpen, 'isOPEn');
 
   return (
     <div className={styles.header_small_screen_container}>

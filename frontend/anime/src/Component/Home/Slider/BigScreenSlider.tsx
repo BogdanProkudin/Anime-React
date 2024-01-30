@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import { PrevButton, NextButton, usePrevNextButtons } from './SliderArrowButtons';
 import styles from './styles.module.scss';
@@ -18,17 +18,16 @@ type PropType = {
 const Slider: React.FC<PropType> = (props) => {
   const { options } = props;
   const dispatch = useAppDispatch();
-  const slides = useAppSelector((state) => state.getAnime.animeSlider);
+
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const navigate = useNavigate();
   const AnimeStatusLoader = useAppSelector((state) => state.getAnime.animeSliderStatus);
   const hasDataLoaded = localStorage.getItem('hasDataLoadedz');
   const storedSliderData = hasDataLoaded !== null ? JSON.parse(hasDataLoaded) : [];
-
+  const [slides, setSlides] = useState([]);
   function handleChooseAnime(el: AnimeInfo) {
-    const AnimeTitle = el.title_english;
+    const AnimeTitle = el.title_english ? el.title_english : el.title;
     const AnimeImage = el.images.jpg.image_url;
-    console.log(AnimeTitle, 'title', AnimeImage, 'Image');
 
     navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
   }
@@ -40,11 +39,11 @@ const Slider: React.FC<PropType> = (props) => {
 
         const sliderDataStrig = JSON.stringify(response);
         localStorage.setItem('hasDataLoadedz', sliderDataStrig);
+        setSlides(response);
       }
     }
     getSliderAnime();
   }, [dispatch]);
-  console.log(storedSliderData);
 
   return (
     <div className={styles.slides_container}>
@@ -58,7 +57,7 @@ const Slider: React.FC<PropType> = (props) => {
               ) : (
                 storedSliderData.map((anime: AnimeInfo, index: number) => {
                   return (
-                    <div onClick={() => handleChooseAnime(anime)}>
+                    <div key={index} onClick={() => handleChooseAnime(anime)}>
                       <SliderItem
                         isParallax={false}
                         index={index}

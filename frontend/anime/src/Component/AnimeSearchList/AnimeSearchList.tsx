@@ -12,24 +12,17 @@ const AnimeSearchList = () => {
   const dispatch = useAppDispatch();
   const { AnimeTitle } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
+
   const animeStatus = useAppSelector((state) => state.getAnime.animeStatus);
 
   const [foundedAnime, setFoundedAnime] = useState([]);
 
   useEffect(() => {
     async function getAnimeInfo() {
-      const ApiToken = '205cbb1f38375f91b405169fa2da91a8';
-
-      console.log('AnimeTitle', AnimeTitle);
-
       const paramsForInfo = {
-        token: ApiToken,
         title: AnimeTitle,
         limit: 'none',
       };
-
-      console.log('here');
 
       localStorage.removeItem('hasSearchAnimeDataLoaded123456912');
 
@@ -48,7 +41,7 @@ const AnimeSearchList = () => {
   }
 
   return (
-    <div>
+    <>
       <Header />
       <h1 style={{ color: 'white', alignItems: 'center', marginLeft: '5%' }}>
         Search results for : <span>{AnimeTitle?.toUpperCase()}</span>
@@ -64,7 +57,7 @@ const AnimeSearchList = () => {
                       isParallax={false}
                       index={index}
                       ImagesPoster={anime.images.jpg.image_url}
-                      ImagesTitle={anime.title_english}
+                      ImagesTitle={anime.title_english ? anime.title_english : anime.title}
                       AnimeGenres={anime.genres[1]}
                       AnimeYear={anime.year}
                     />
@@ -97,7 +90,7 @@ const AnimeSearchList = () => {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

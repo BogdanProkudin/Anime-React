@@ -1,3 +1,6 @@
+body {
+  overflow-x: hidden;
+}
 .anime_info_container {
   display: flex;
   margin: 4rem;
@@ -5,6 +8,7 @@
 
   align-items: center;
 }
+
 .anime_episode_image {
   border-radius: 20px;
   height: 400px;
@@ -17,7 +21,19 @@
 
   justify-content: space-between;
 }
-
+.Toastify__toast-container {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  /* Другие стили по вашему усмотрению */
+}
+.toast_container {
+  position: fixed;
+  top: 10px; /* Расстояние от верхнего края */
+  right: 10px; /* Расстояние от правого края */
+  z-index: 1000; /* Позиция над остальными элементами на странице */
+}
 .anime_info_text {
   font-size: 33px;
   max-width: 600px;
@@ -124,5 +140,8 @@
   }
   .anime_video_screen {
     width: 100%;
+  }
+  .toast_container {
+    right: 0px;
   }
 }
