@@ -7,6 +7,8 @@ import AnimeEpisode from './Component/Video/AnimeEpisode';
 import ProfileSetting from './Component/ProfileSettings/ProfileSetting';
 import AnimeSearchList from './Component/AnimeSearchList/AnimeSearchList';
 import AnimeGenresList from './Component/AnimeGenresList/AnimeGenresList';
+import { StrictMode } from 'react';
+import React from 'react';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -14,8 +16,9 @@ function App() {
 
   const routes = [
     { path: '/Registration', element: token ? <Navigate to="/Home" /> : <SignUpPage /> },
-    { path: '/LogIn', element: token ? <Navigate to="/Home" /> : <SignInPage /> },
-    { path: '/Settings', element: <ProfileSetting /> },
+    { path: '/LogIn', element: <SignInPage /> },
+    { path: '/Settings/:Info', element: <ProfileSetting /> },
+
     {
       path: '/Home',
       element: <HomePage />,

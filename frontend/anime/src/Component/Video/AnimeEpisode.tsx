@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
@@ -10,6 +9,7 @@ import WatchSection from './Sections/AnimeEpisodeWatchSection';
 import Header from '../Home/Header/Header';
 import { ToastContainer, toast } from 'react-toastify';
 
+import styles from './styles.module.scss';
 const AnimeEpisode = () => {
   const { AnimeTitle } = useParams();
   const location = useLocation();
@@ -22,7 +22,6 @@ const AnimeEpisode = () => {
   useEffect(() => {
     const getAnimeInfo = async () => {
       const ApiToken = '205cbb1f38375f91b405169fa2da91a8';
-      console.log(AnimeTitle, 'ANIME EPISODE = title');
 
       const paramsForInfo = {
         token: ApiToken,
@@ -32,20 +31,33 @@ const AnimeEpisode = () => {
       };
       const responseForInfo = await dispatch(getAnimeSeriaThunk(paramsForInfo));
 
-      const paramsForLink = {
-        token: ApiToken,
-        title: AnimeTitle,
-        title_orig: responseForInfo.payload ? responseForInfo.payload.title_japanese : 'Unknown',
-        full_match: true,
-        limit: 1,
-      };
-      const responseForLink = await dispatch(getAnimeSeriaLinkThunk(paramsForLink));
+      if (responseForInfo.payload) {
+        if (responseForInfo.payload.trailer.youtube_id) {
+          setAnimeTrailer(responseForInfo.payload.trailer.youtube_id);
+        } else {
+          toast.error(`Youtube player is not found!`, {
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
 
-      setAnimeLink(responseForLink.payload.length > 0 ? responseForLink.payload[0].link : '');
-      setAnimeTrailer(responseForInfo.payload ? responseForInfo.payload.trailer.embed_url : '');
+            draggable: true,
+            closeButton: <span style={{ color: 'white', fontSize: '24px' }}>×</span>, // Белый крестик
+            style: {
+              backgroundColor: 'rgb(40, 40, 40)',
+              color: '#fff',
+              position: 'fixed',
+            },
+            progressStyle: {
+              backgroundColor: '#fff',
+            },
+            className: styles.toast_container,
+          });
+        }
+      }
     };
-    getAnimeInfo();
     window.scrollTo(0, 0);
+    getAnimeInfo();
   }, [AnimeTitle]);
 
   return (

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAppSelector } from '../../../../redux/hook';
 import { AnimeInfo } from '../../../../types/Home';
 import styles from './styles.module.scss';

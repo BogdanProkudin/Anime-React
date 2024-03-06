@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../redux/hook';
 import { UserRegistration } from '../../redux/slices/Auth';
 import FocusLock from 'react-focus-lock';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 export type InputValues = {
   UserName: string;

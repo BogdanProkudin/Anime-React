@@ -11,8 +11,8 @@ body {
 
 .anime_episode_image {
   border-radius: 20px;
-  height: 400px;
-  max-width: 300px;
+  height: 300px;
+  max-width: 230px;
   width: 100%;
 }
 .anime_info_text_container {
@@ -120,9 +120,7 @@ body {
 
     align-items: center;
   }
-  .anime_episode_image {
-    height: 350px;
-  }
+
   .anime_episode_conainer_button {
     margin-top: 2rem;
   }
@@ -136,7 +134,8 @@ body {
     font-size: 20px;
   }
   .anime_episode_image {
-    height: 250px;
+    height: 240px;
+    max-width: 180px;
   }
   .anime_video_screen {
     width: 100%;

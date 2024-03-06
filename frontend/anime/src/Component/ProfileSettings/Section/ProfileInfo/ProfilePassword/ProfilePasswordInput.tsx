@@ -1,5 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import styles from './styles.module.scss';
+import React from 'react';
 type ProfileInfoInputProps = {
   setPasswordFirstnputValue: Dispatch<SetStateAction<string>>;
   setPasswordSecondInputValue: Dispatch<SetStateAction<string>>;

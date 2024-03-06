@@ -25,7 +25,11 @@ export interface Anime {
 }
 
 type suggestionType = {
-  suggestion: { title_english: string; images: { jpg: { image_url: string } } };
+  suggestion: {
+    title: any;
+    title_english: string;
+    images: { jpg: { image_url: string } };
+  };
 };
 type HeaderSmallScreenInputProps = {
   setIsSearchOpen: Dispatch<SetStateAction<boolean>>;
@@ -47,11 +51,12 @@ const HeaderSmallScreenInput: React.FC<HeaderSmallScreenInputProps> = ({ setIsSe
   const debouncedHandleInputChange = React.useCallback(
     debounce(async (Inputvalue: string) => {
       setLoading(true);
+
       if (Inputvalue.length > 3) {
         const response = await dispatch(getAnimeSearchSeriaThunk({ title: Inputvalue }));
 
         if (response.payload.length > 0) {
-          setSuggestions(response.payload.slice(0, 3));
+          setSuggestions(response.payload.slice(0, 3).reverse());
         } else {
           setSuggestions(['Not Found']);
         }
@@ -60,28 +65,40 @@ const HeaderSmallScreenInput: React.FC<HeaderSmallScreenInputProps> = ({ setIsSe
     }, 1000),
     [],
   );
+  const ViewAllAnime = () => {
+    const SearchItems = value;
+    navigate(`/Search/results/${SearchItems}`);
 
-  const getSuggestions = (): Anime[] | any => suggestions;
-
-  const onSuggestionsFetchRequested = async ({ value }: SuggestionsFetchRequestedParams) => {
-    return suggestions;
+    setSuggestions([]);
+    setValue('');
   };
 
-  const onChange = (event: React.FormEvent<HTMLElement>, { newValue }: Autosuggest.ChangeEvent) => {
+  const getSuggestions = (): string => '';
+
+  const onSuggestionsFetchRequested = async ({ value }: SuggestionsFetchRequestedParams) => {};
+  const onChange = (
+    event: React.FormEvent<HTMLElement>,
+    { newValue }: Autosuggest.ChangeEvent,
+  ): void => {
     setValue(newValue);
     setLoading(true);
+
     setSuggestions(['pending']);
     debouncedHandleInputChange(newValue);
   };
 
-  const onSuggestionSelected = (_event: any, data: suggestionType) => {
+  const onSuggestionSelected = async (_event: any, data: suggestionType) => {
     if (
       typeof data.suggestion !== 'string' &&
       'title_english' in data.suggestion &&
       'images' in data.suggestion
     ) {
-      const AnimeTitle = data.suggestion.title_english;
-      const AnimeImage = data.suggestion.images.jpg.image_url;
+      const AnimeTitle = data.suggestion.title_english
+        ? data.suggestion.title_english
+        : data.suggestion.title;
+
+      const AnimeImage = data.suggestion.images ? data.suggestion.images.jpg.image_url : '';
+      setIsSearchOpen(false);
       navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
     }
   };
@@ -93,15 +110,6 @@ const HeaderSmallScreenInput: React.FC<HeaderSmallScreenInputProps> = ({ setIsSe
     className: styles.header_small_screen_input,
     onFocus: () => setInputFocused(true), // Обновляем состояние при фокусировке на инпуте
     onBlur: () => setInputFocused(false), // Обновляем состояние при потере фокуса на инпуте
-  };
-
-  const ViewAllAnime = () => {
-    const SearchItems = value;
-    navigate(`/Search/results/${SearchItems}`);
-
-    setSuggestions([]);
-    setValue('');
-    setIsSearchOpen(false);
   };
 
   return (

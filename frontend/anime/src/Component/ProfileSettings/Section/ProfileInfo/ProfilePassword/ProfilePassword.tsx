@@ -6,7 +6,12 @@ import { BiPencil } from 'react-icons/bi';
 import ProfilePasswordButton from './ProfilePasswordButton';
 import ProfilePasswordInput from './ProfilePasswordInput';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
-const ProfilePassword = () => {
+import React from 'react';
+type ProfilePasswordProps = {
+  password: string | undefined;
+  refetchUserInfo: any;
+};
+const ProfilePassword: React.FC<ProfilePasswordProps> = ({ password, refetchUserInfo }) => {
   const [isChangePassword, setIsChangePassword] = useState<boolean>(false);
   const [PasswordFirstInputValue, setPasswordFirstInputValue] = useState<string>('');
   const [PasswordSecondInputValue, setPasswordSecondInputValue] = useState<string>('');
@@ -52,7 +57,7 @@ const ProfilePassword = () => {
                 fontSize: isPasswordVisible ? '20px' : '25px',
               }}
               readOnly
-              value={storedUser.Password}
+              value={password}
               type={isPasswordVisible ? 'text' : 'password'}
               className={styles.profile_info_user_text}
             />
@@ -115,6 +120,7 @@ const ProfilePassword = () => {
                 text="Save"
                 setIsChangePassword={setIsChangePassword}
                 setErrorPassword={setErrorPassword}
+                refetchUserInfo={refetchUserInfo}
               />
               <ProfilePasswordButton
                 PasswordFirstInputValue={PasswordFirstInputValue}

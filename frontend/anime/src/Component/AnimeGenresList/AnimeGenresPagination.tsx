@@ -6,7 +6,8 @@ import { RefObject, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link, animateScroll as scroll } from 'react-scroll';
 import styles from '../Home/AnimeList/styles.module.scss';
-import { getAnimeGenresListThunk } from '../../redux/slices/Anime';
+
+import { toast } from 'react-toastify';
 interface PaginationProps {
   AnimeContainerRef: RefObject<HTMLDivElement>;
   genresName: string | undefined;
@@ -37,17 +38,6 @@ const AnimeGenresPagination: React.FC<PaginationProps> = ({ AnimeContainerRef, g
       setFirstRender(false);
     }
   }, [AnimeContainerRef.current]);
-  useEffect(() => {
-    // Обработка изменений параметров URL при навигации вперед/назад
-    const updatedPage = parseInt(urlParams.get('page') || '1', 10);
-    dispatch(
-      getAnimeGenresListThunk({
-        page: updatedPage,
-        genresName: genresName ? genresName : 'Unknown',
-      }),
-    );
-    window.scrollTo(0, 0);
-  }, [location.search]);
 
   function handlePageSelect(selectedPage: { selected: number }) {
     const newPage = selectedPage.selected + 1;

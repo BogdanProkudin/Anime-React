@@ -5,14 +5,15 @@ import HeaderBigScreenInput from './HeaderInputBigScreen';
 import avatar from '../../icons/anime-style-game-avatar-mascot-600nw-2322112663.webp';
 import HeaderButton from './HeaderButton';
 import { useMediaQuery } from 'react-responsive';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaSearch } from 'react-icons/fa';
+
 import { useNavigate } from 'react-router-dom';
 import HeaderInputSmallScreen from './HeaderInputSmallScreen';
 import { IoIosSearch } from 'react-icons/io';
 const Header = () => {
   const navigate = useNavigate();
 
-  const isSmallScreen = useMediaQuery({ query: '(min-width: 683px)' });
+  const isBigScreen = useMediaQuery({ query: '(min-width: 683px)' });
   const token = localStorage.getItem('token');
 
   const isPhoneScreen = useMediaQuery({ query: '(max-width: 500px)' });
@@ -24,7 +25,7 @@ const Header = () => {
           AnimePro
         </h1>
 
-        {isSmallScreen && (
+        {isBigScreen && (
           <div style={{ display: 'flex', position: 'relative' }}>
             <HeaderBigScreenInput />
             {
@@ -35,12 +36,16 @@ const Header = () => {
             }
           </div>
         )}
-        {isSearchOpen && !isSmallScreen && (
+        {isSearchOpen && !isBigScreen && (
           <HeaderInputSmallScreen setIsSearchOpen={setIsSearchOpen} />
         )}
         <div className={styles.header_button_container}>
-          {!isSmallScreen && (
-            <FaMagnifyingGlass onClick={() => setIsSearchOpen(!isSearchOpen)} color="grey" />
+          {!isBigScreen && (
+            <FaSearch
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              color="grey"
+              style={{ width: '50px', marginRight: '10px', cursor: 'pointer' }}
+            />
           )}
           {token === null ? (
             <>
@@ -64,7 +69,7 @@ const Header = () => {
           ) : (
             <div className={styles.avatar_container}>
               <img
-                onClick={() => navigate('/Settings')}
+                onClick={() => navigate('/Settings/profileInfo')}
                 src={avatar}
                 alt="Profile Picture"
                 className={styles.avatar_img}

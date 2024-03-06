@@ -3,7 +3,7 @@ import styles from './styles.module.scss';
 import { FaRegEye } from 'react-icons/fa6';
 import { FaRegBookmark } from 'react-icons/fa6';
 import { FaPlus } from 'react-icons/fa6';
-
+import { useToWatchStatus } from '../../hooks/useUserInfo';
 import { CiStar } from 'react-icons/ci';
 import { icons } from 'react-icons/lib';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,42 +15,38 @@ import { sendAnimeToWatch } from '../../redux/slices/Anime';
 import { AnimeInfo } from '../../types/Home';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-type AnimeEpisodeInfo = {
+import React from 'react';
+type AnimeEpisodeInfoType = {
   AnimePoster: string | null;
   AnimeTitle: string | undefined;
 };
 
-const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimePoster, AnimeTitle }) => {
-  const animeStatus = useAppSelector((state) => state.getAnime.animeStatus);
+const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfoType> = ({ AnimePoster, AnimeTitle }) => {
+  const animeStatus: string = useAppSelector((state) => state.getAnime.animeStatus);
   const AnimeInfo: AnimeInfo = useAppSelector((state) => state.getAnime.animeEpisode);
   const [isToWatch, setIsToWatch] = useState(false);
   const storedUserString = localStorage.getItem('CurrentUser');
   const storedUser = storedUserString !== null ? JSON.parse(storedUserString) : 'NOT FOUND';
-  async function removeFromToWatchList(userName: string, animeTitle: string | undefined) {
+  const dispatch = useAppDispatch();
+  const isToWatchStatus = useToWatchStatus(AnimeTitle, storedUser._id);
+
+  useEffect(() => {
+    setIsToWatch(isToWatchStatus);
+  }, [isToWatchStatus]);
+  async function removeFromToWatchList(userId: string, animeTitle: string | undefined) {
     try {
-      const response = await axios.put('http://localhost:3003/RemoveFromToWatch', {
-        userName: userName,
+      await axios.put('http://localhost:3003/RemoveFromToWatch', {
+        userId: userId,
         animeTitle: animeTitle,
       });
-
       setIsToWatch(false);
     } catch (error) {
       console.error('Error removing anime from To Watch list:', error);
     }
   }
 
-  useEffect(() => {
-    async function getIsToWatch() {
-      const response = await axios.get(
-        `http://localhost:3003/CheckIsToWatch?animeTitle=${AnimeTitle}&userName=${storedUser.UserName}`,
-      );
-      console.log(response, 'RESPONSE');
-      setIsToWatch(response.data.isInToWatchList);
-    }
-    getIsToWatch();
-  }, []);
   const AddToWatchData = {
-    CurrentUser: storedUser.UserName,
+    userId: storedUser._id,
     ToWatch: {
       AnimeTitle,
       AnimePoster,
@@ -61,7 +57,7 @@ const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimePoster, AnimeTitle 
       AnimeYear: AnimeInfo ? AnimeInfo.year : 'Unknown',
     },
   };
-  const dispatch = useAppDispatch();
+
   const ButtonsList = [
     { text: 'Watching', icon: <FaRegEye className={`${styles.icon}`} color="white" /> },
     {
@@ -74,54 +70,41 @@ const AnimeEpisodeInfo: React.FC<AnimeEpisodeInfo> = ({ AnimePoster, AnimeTitle 
       icon: <FaPlus className={`${styles.icon}`} color="white" />,
     },
   ];
+  console.log(isToWatch, 'TO WATCH');
+
   const AddAnimeToWatch = async (text: string) => {
-    if (text === 'To Watch') {
-      const response = await dispatch(sendAnimeToWatch(AddToWatchData));
-
-      toast.success(`Anime "${AnimeTitle}" added in list  to Watch!`, {
+    if (!storedUser._id) {
+      toast.error('You are not logged in!', { autoClose: 3000 });
+    } else if (!isToWatch) {
+      await dispatch(sendAnimeToWatch(AddToWatchData));
+      toast.success(`${AnimeTitle} added in list  to Watch!`, {
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-
-        draggable: true,
-        closeButton: <span style={{ color: 'white', fontSize: '24px' }}>×</span>, // Белый крестик
         style: {
-          backgroundColor: 'rgb(40, 40, 40)', // Черный фон
-          color: '#fff', // Белый текст
-          position: 'fixed',
-        },
-        progressStyle: {
-          backgroundColor: '#fff',
-        },
-        className: styles.toast_container,
-      });
-      setIsToWatch(true);
-    }
-    if (text === 'Remove to Watch') {
-      removeFromToWatchList(storedUser.UserName, AnimeTitle);
-      toast.error(`Anime "${AnimeTitle}" deleted from list to Watch!`, {
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-
-        draggable: true,
-        closeButton: <span style={{ color: 'white', fontSize: '24px' }}>×</span>,
-        style: {
-          backgroundColor: 'rgb(40, 40, 40)', // Красный фон для успешного удаления
+          backgroundColor: 'rgb(40, 40, 40)',
           color: '#fff',
           position: 'fixed',
         },
         progressStyle: {
           backgroundColor: '#fff',
         },
-
-        className: styles.toast_container,
       });
+      setIsToWatch(true);
+    } else {
+      removeFromToWatchList(storedUser._id, AnimeTitle);
+      toast.error(`Anime "${AnimeTitle}" removed from Watch list!`, {
+        autoClose: 3000,
+        style: {
+          backgroundColor: 'rgb(40, 40, 40)',
+          color: '#fff',
+          position: 'fixed',
+        },
+        progressStyle: {
+          backgroundColor: '#fff',
+        },
+      });
+      setIsToWatch(false);
     }
   };
-  console.log('ANIMEEEEEEE', AnimeTitle);
 
   return (
     <div className={styles.anime_info_container}>

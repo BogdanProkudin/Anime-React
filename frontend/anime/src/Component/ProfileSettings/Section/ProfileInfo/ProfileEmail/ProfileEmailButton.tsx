@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styles from './styles.module.scss';
 import axios from 'axios';
+
 type ProfileInfoButtonProps = {
   text: string;
   setIsChangeEmail: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,7 +9,9 @@ type ProfileInfoButtonProps = {
   EmailFirstInputValue: string;
   EmailSecondInputValue: string;
   setErrorEmail: Dispatch<SetStateAction<string>>;
+  refetchUserInfo?: any;
 };
+
 const ProfileEmailButton: React.FC<ProfileInfoButtonProps> = ({
   text,
   setIsChangeEmail,
@@ -16,39 +19,41 @@ const ProfileEmailButton: React.FC<ProfileInfoButtonProps> = ({
   EmailFirstInputValue,
   EmailSecondInputValue,
   setErrorEmail,
+  refetchUserInfo,
 }) => {
   const storedUserString = localStorage.getItem('CurrentUser');
-
   const storedUser = storedUserString !== null ? JSON.parse(storedUserString) : 'NOT FOUND';
 
-  console.log(storedUser);
-
-  async function handleButtonClick() {
+  const handleButtonClick = async () => {
     if (text === 'Cancel') {
       CancelFunction();
       setErrorEmail('');
       return setIsChangeEmail(false);
     } else {
       if (EmailFirstInputValue === EmailSecondInputValue) {
-        const response = await axios.post('http://localhost:3003/ChangeEmail', {
-          Email: storedUser.Email,
-          newEmail: EmailFirstInputValue,
-        });
-        console.log('Email changed', response);
+        try {
+          const response = await axios.post('http://localhost:3003/ChangeEmail', {
+            userId: storedUser._id,
+            newEmail: EmailFirstInputValue,
+          });
+          console.log('Email changed', response);
 
-        if (response.data.user) {
-          const NewUserString = JSON.stringify(response.data.user);
-          localStorage.setItem('CurrentUser', NewUserString);
-          setErrorEmail('');
-          setIsChangeEmail(false);
-        } else {
-          setErrorEmail(response.data.message);
+          if (response.data.user) {
+            refetchUserInfo && refetchUserInfo(); // Обновляем информацию о пользователе, если передана функция
+            setErrorEmail('');
+            setIsChangeEmail(false);
+          } else {
+            setErrorEmail(response.data.message);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          setErrorEmail('Failed to change email');
         }
       } else {
         setErrorEmail('Email should be the same');
       }
     }
-  }
+  };
 
   return (
     <button onClick={handleButtonClick} className={styles.profile_info_button}>

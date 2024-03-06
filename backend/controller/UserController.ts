@@ -86,7 +86,7 @@ export async function updateNickname(req: Request, res: Response) {
     }
 
     const updatedUser = await UserModel.findOneAndUpdate(
-      { UserName: req.body.UserName },
+      { _id: req.body.userId },
       { $set: { UserName: req.body.newUserName } },
       { new: true }
     );
@@ -112,7 +112,7 @@ export async function updateEmail(req: Request, res: Response) {
     const user =
       emailRegex.test(req.body.newEmail) &&
       (await UserModel.findOneAndUpdate(
-        { Email: req.body.Email },
+        { _id: req.body.userId },
         { $set: { Email: req.body.newEmail } },
         { new: true }
       ));
@@ -134,7 +134,7 @@ export async function UpdatePassword(req: Request, res: Response) {
     const user =
       passwordregex.test(req.body.newPassword) &&
       (await UserModel.findOneAndUpdate(
-        { Password: req.body.Password },
+        { _id: req.body.userId },
         { $set: { Password: req.body.newPassword } },
         { new: true }
       ));
@@ -154,11 +154,11 @@ export async function UpdatePassword(req: Request, res: Response) {
 
 export async function AddAnimeToWatch(req: Request, res: Response) {
   try {
-    const { CurrentUser, ToWatch } = req.body;
+    const { userId, ToWatch } = req.body;
 
     // Проверка, есть ли аниме уже в списке To Watch
     const user = await UserModel.findOne({
-      UserName: CurrentUser,
+      _id: userId,
       ToWatch: ToWatch,
     });
 
@@ -171,7 +171,7 @@ export async function AddAnimeToWatch(req: Request, res: Response) {
 
     // Если аниме еще нет в списке, добавляем его
     const updatedUser = await UserModel.findOneAndUpdate(
-      { UserName: CurrentUser },
+      { _id: userId },
       { $push: { ToWatch: ToWatch } },
       { new: true } // Чтобы получить обновленный документ
     );
@@ -193,15 +193,14 @@ export async function AddAnimeToWatch(req: Request, res: Response) {
 export async function CheckIsToWatch(req: Request, res: Response) {
   try {
     const animeTitle = req.query.animeTitle as string;
-    const userName = req.query.userName as string;
+    const userId = req.query.userId as string;
     console.log(animeTitle, "qqq");
 
     // Проверка, есть ли аниме в списке To Watch
     const user = await UserModel.findOne({
-      UserName: userName,
+      _id: userId,
       "ToWatch.AnimeTitle": animeTitle,
     });
-    console.log(user);
 
     const isInToWatchList = Boolean(user);
 
@@ -213,10 +212,10 @@ export async function CheckIsToWatch(req: Request, res: Response) {
 }
 export async function RemoveFromToWatch(req: Request, res: Response) {
   try {
-    const { userName, animeTitle } = req.body;
+    const { userId, animeTitle } = req.body;
 
     const updatedUser = await UserModel.findOneAndUpdate(
-      { UserName: userName },
+      { _id: userId },
       { $pull: { ToWatch: { AnimeTitle: animeTitle } } },
       { new: true }
     );
@@ -237,9 +236,9 @@ export async function RemoveFromToWatch(req: Request, res: Response) {
 
 export async function getToWatchAnime(req: Request, res: Response) {
   try {
-    const userName = req.query.username;
+    const userId = req.query.userId;
 
-    const user = await UserModel.findOne({ UserName: userName });
+    const user = await UserModel.findById({ _id: userId });
 
     if (user) {
       return res.json({ toWatch: user.ToWatch });
@@ -248,6 +247,23 @@ export async function getToWatchAnime(req: Request, res: Response) {
     }
   } catch (error) {
     console.error("Error get Anime from  Watch list:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export async function getUserById(req: Request, res: Response) {
+  try {
+    const userId = req.query.userId;
+
+    const user = await UserModel.findById({ _id: userId });
+
+    if (user) {
+      return res.json({ user });
+    } else {
+      return res.json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error get user data:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

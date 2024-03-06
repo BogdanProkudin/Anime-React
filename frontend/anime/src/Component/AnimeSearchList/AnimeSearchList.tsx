@@ -8,6 +8,8 @@ import styles from '../Home/AnimeList/styles.module.scss';
 import SliderItem from '../Home/Slider/SliderItem';
 import { AnimeInfo } from '../../types/Home';
 import AnimeListSkeleton from '../Home/AnimeList/SkeletonList';
+import { ToastContainer, toast } from 'react-toastify';
+import { useGetAnimeSearchSeriaDataQuery } from '../../redux/slices/AnimeApi';
 const AnimeSearchList = () => {
   const dispatch = useAppDispatch();
   const { AnimeTitle } = useParams();
@@ -15,30 +17,21 @@ const AnimeSearchList = () => {
 
   const animeStatus = useAppSelector((state) => state.getAnime.animeStatus);
 
-  const [foundedAnime, setFoundedAnime] = useState([]);
-
-  useEffect(() => {
-    async function getAnimeInfo() {
-      const paramsForInfo = {
-        title: AnimeTitle,
-        limit: 'none',
-      };
-
-      localStorage.removeItem('hasSearchAnimeDataLoaded123456912');
-
-      const response = (await dispatch(getAnimeSeriaThunk(paramsForInfo))).payload;
-
-      setFoundedAnime(response);
-    }
-    getAnimeInfo();
-  }, [AnimeTitle, dispatch]);
-
+  const {
+    data: foundedAnime,
+    error,
+    isLoading,
+    isFetching,
+  } = useGetAnimeSearchSeriaDataQuery({ title: AnimeTitle });
   function handleChooseAnime(el: AnimeInfo) {
-    const AnimeTitle = el.title_english;
+    const AnimeTitle = el.title_english ? el.title_english : el.title;
     const AnimeImage = el.images.jpg.image_url;
 
     navigate(`/Video/${AnimeTitle}?image=${AnimeImage}`);
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -46,11 +39,11 @@ const AnimeSearchList = () => {
       <h1 style={{ color: 'white', alignItems: 'center', marginLeft: '5%' }}>
         Search results for : <span>{AnimeTitle?.toUpperCase()}</span>
       </h1>
+      <ToastContainer />
       <div style={{ marginTop: '50px' }} className={styles.anime_list_container}>
         <div className={styles.anime_items_container}>
-          {foundedAnime ? (
-            foundedAnime.length > 0 ? (
-              foundedAnime.map((anime: AnimeInfo, index: number) => {
+          {!isFetching
+            ? foundedAnime.data.map((anime: AnimeInfo, index: number) => {
                 return (
                   <div onClick={() => handleChooseAnime(anime)}>
                     <SliderItem
@@ -64,30 +57,9 @@ const AnimeSearchList = () => {
                   </div>
                 );
               })
-            ) : (
-              <h1
-                style={{
-                  color: 'red',
-                  fontSize: '20px',
-                  marginLeft: '20rem',
-                  width: '440px',
-                }}
-              >
-                Slow Down. Now you can reload the Page
-              </h1>
-            )
-          ) : (
-            <h1
-              style={{
-                color: 'red',
-                fontSize: '20px',
-                marginLeft: '20rem',
-                width: '440px',
-              }}
-            >
-              Slow Down. Now you can reload the Page
-            </h1>
-          )}
+            : [...new Array(18)].map((_) => {
+                return <AnimeListSkeleton />;
+              })}
         </div>
       </div>
     </>

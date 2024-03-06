@@ -7,7 +7,12 @@ import stylesEmail from './styles.module.scss';
 import ProfileEmailInput from './ProfileEmailInput';
 import { useMediaQuery } from 'react-responsive';
 import ProfileEmailButton from './ProfileEmailButton';
-const ProfileEmail = () => {
+import React from 'react';
+type ProfileEmailProps = {
+  email: string | undefined;
+  refetchUserInfo: any;
+};
+const ProfileEmail: React.FC<ProfileEmailProps> = ({ email, refetchUserInfo }) => {
   const [isChangeEmail, setIsChangeEmail] = useState(false);
   const [EmailFirstInputValue, setEmailFirstInputValue] = useState('');
   const [EmailSecondInputValue, setEmailSecondInputValue] = useState('');
@@ -42,7 +47,7 @@ const ProfileEmail = () => {
         </div>
         {!isChangeEmail ? (
           <div className={styles.profile_info_user_change}>
-            <p className={styles.profile_info_user_text}>{storedUser.Email}</p>
+            <p className={styles.profile_info_user_text}>{email}</p>
             <BiPencil
               onClick={() => setIsChangeEmail(true)}
               className={styles.pensil_svg}
@@ -85,6 +90,7 @@ const ProfileEmail = () => {
                 text="Save"
                 setIsChangeEmail={setIsChangeEmail}
                 setErrorEmail={setErrorEmail}
+                refetchUserInfo={refetchUserInfo}
               />
               <ProfileEmailButton
                 EmailFirstInputValue={EmailFirstInputValue}

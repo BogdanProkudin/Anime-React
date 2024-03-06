@@ -9,7 +9,7 @@ type BroadcastInfo = {
   timezone: string;
 };
 
-type DemographicInfo = {
+export type DemographicInfo = {
   mal_id: number;
   type: string;
   name: string;

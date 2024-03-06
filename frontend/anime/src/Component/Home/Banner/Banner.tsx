@@ -2,12 +2,9 @@ import styles from './styles.module.scss';
 import { useMediaQuery } from 'react-responsive';
 import AnimeImagePoster from '../../icons/377937214fb2132ebdb424f25ce28725.jpg';
 import HomeButton from './BannerButton';
-import Slider from '../Slider/BigScreenSlider';
-import { EmblaOptionsType } from 'embla-carousel-react';
-import EmblaCarousel from '../Slider/SmallScreemSlider';
+
 import { useEffect, useState } from 'react';
-import { LuVideoOff } from 'react-icons/lu';
-import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
+
 import { useAppDispatch } from '../../../redux/hook';
 import { useNavigate } from 'react-router-dom';
 const BigBanner = () => {
@@ -53,19 +50,7 @@ const BigBanner = () => {
                   />
                 </div>
               </div>
-              <div style={{ position: 'relative', top: '5rem' }}>
-                <h1
-                  style={{
-                    color: 'white',
-                    fontSize: '22px',
-                    marginBlockEnd: '0px',
-                    marginLeft: '5%',
-                    marginTop: '2rem',
-                  }}
-                >
-                  Special For You :
-                </h1>
-              </div>
+              <div style={{ position: 'relative', top: '5rem' }}></div>
             </div>
           </div>
         </div>

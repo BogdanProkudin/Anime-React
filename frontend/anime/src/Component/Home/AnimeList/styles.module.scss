@@ -6,7 +6,7 @@
 }
 .anime_items_container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 3 колонки */
+  grid-template-columns: repeat(6, 1fr);
   gap: 16px; /* Расстояние между элементами */
   margin-bottom: 50px;
 }
@@ -43,7 +43,12 @@
 .hidden_next_button {
   display: none;
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1340px) {
+  .anime_items_container {
+    grid-template-columns: repeat(5, 1fr); /* 3 колонки */
+  }
+}
+@media screen and (max-width: 1160px) {
   .anime_items_container {
     grid-template-columns: repeat(4, 1fr); /* 3 колонки */
   }

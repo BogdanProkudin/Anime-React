@@ -5,11 +5,14 @@ import styles from './styles.module.scss';
 //
 import SliderItem from './SliderItem';
 import { useAppDispatch, useAppSelector } from '../../../redux/hook';
-import { getAnimeSliderThunk } from '../../../redux/slices/Anime';
-import ImageGrid from '../AnimeList/SkeletonList';
+
 import { useNavigate } from 'react-router-dom';
 import { AnimeInfo } from '../../../types/Home';
-import { AsyncThunkAction, Dispatch, AnyAction } from '@reduxjs/toolkit';
+import { useGetSliderAnimeAPiQuery } from '../../../redux/slices/AnimeApi';
+import AnimeListSkeleton from '../AnimeList/SkeletonList';
+import { toast } from 'react-toastify';
+import { setSliderItems } from '../../../redux/slices/Anime';
+import { useMediaQuery } from 'react-responsive';
 
 type PropType = {
   options?: EmblaOptionsType;
@@ -18,13 +21,10 @@ type PropType = {
 const Slider: React.FC<PropType> = (props) => {
   const { options } = props;
   const dispatch = useAppDispatch();
-
+  const { data, isSuccess, isLoading, isError, isFetching } = useGetSliderAnimeAPiQuery();
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
   const navigate = useNavigate();
-  const AnimeStatusLoader = useAppSelector((state) => state.getAnime.animeSliderStatus);
-  const hasDataLoaded = localStorage.getItem('hasDataLoadedz');
-  const storedSliderData = hasDataLoaded !== null ? JSON.parse(hasDataLoaded) : [];
-  const [slides, setSlides] = useState([]);
+  const isSmallScreen = useMediaQuery({ query: '(max-width: 435px)' });
   function handleChooseAnime(el: AnimeInfo) {
     const AnimeTitle = el.title_english ? el.title_english : el.title;
     const AnimeImage = el.images.jpg.image_url;
@@ -33,31 +33,48 @@ const Slider: React.FC<PropType> = (props) => {
   }
 
   useEffect(() => {
-    async function getSliderAnime() {
-      if (!hasDataLoaded) {
-        const response = (await dispatch(getAnimeSliderThunk())).payload;
+    if (isError) {
+      toast.error(`Error, try reload the page`, {
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
 
-        const sliderDataStrig = JSON.stringify(response);
-        localStorage.setItem('hasDataLoadedz', sliderDataStrig);
-        setSlides(response);
-      }
+        draggable: true,
+        closeButton: <span style={{ color: 'white', fontSize: '24px' }}>×</span>, // Белый крестик
+        style: {
+          backgroundColor: 'rgb(40, 40, 40)',
+          color: '#fff',
+        },
+        progressStyle: {
+          backgroundColor: '#fff',
+        },
+        className: styles.toast_container,
+      });
     }
-    getSliderAnime();
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className={styles.slides_container}>
       <h1 style={{ fontSize: '25px', color: 'white' }}>Special For You</h1>
       <div className={styles.embla}>
         <div className={styles.embla__viewport} ref={emblaRef}>
-          <div className={styles.embla__container}>
-            {storedSliderData !== null ? (
-              storedSliderData.length === 0 ? (
-                slides
-              ) : (
-                storedSliderData.map((anime: AnimeInfo, index: number) => {
+          <div
+            style={{
+              gap: isLoading || isError ? '12px' : '',
+              width: isLoading || isError ? 'max-content' : '',
+            }}
+            className={styles.embla__container}
+          >
+            {data !== undefined && !isFetching && !isError
+              ? data.data.map((anime: AnimeInfo, index: number) => {
                   return (
-                    <div key={index} onClick={() => handleChooseAnime(anime)}>
+                    <div
+                      style={{ paddingLeft: !isSmallScreen ? '30px' : '15px' }}
+                      className={styles.embla__container}
+                      key={index}
+                      onClick={() => handleChooseAnime(anime)}
+                    >
                       <SliderItem
                         isParallax={false}
                         index={index}
@@ -69,10 +86,13 @@ const Slider: React.FC<PropType> = (props) => {
                     </div>
                   );
                 })
-              )
-            ) : (
-              <ImageGrid />
-            )}
+              : [...new Array(12)].map((_, index) => {
+                  return (
+                    <div key={index}>
+                      <AnimeListSkeleton />
+                    </div>
+                  );
+                })}
           </div>
         </div>
       </div>

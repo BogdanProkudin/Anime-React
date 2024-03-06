@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAppSelector } from '../../../../redux/hook';
 import AnimeDescSkeleton from '../../Skeletons/AnimeDescSkeleton';
 import AnimeInfoSkeleton from '../../Skeletons/AnimeInfoSkeleton';
@@ -10,7 +11,10 @@ const InfoSection = () => {
   const AnimeInfo = useAppSelector((state) => state.getAnime.animeEpisode);
   return (
     <div
-      style={{ alignItems: animeStatus === 'pending' || !AnimeInfo ? 'center' : '' }}
+      style={{
+        alignItems: animeStatus === 'pending' || !AnimeInfo ? 'center' : '',
+        marginLeft: animeStatus === 'pending' || !AnimeInfo ? '0px' : '',
+      }}
       className={styles.info_section_container}
     >
       {<AnimeEpisodeDetails />}

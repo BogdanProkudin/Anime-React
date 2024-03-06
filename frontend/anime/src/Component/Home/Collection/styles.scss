@@ -62,15 +62,32 @@ body {
   transition: transform 0.3s ease; /* Анимация поворота */
 }
 
-@media screen and (max-width: 925px) {
+@media screen and (max-width: 940px) {
   .image-collection {
+    gap: 1px;
+  }
+  .image-item {
+    height: 300px;
+    width: 270px;
+  }
+  .collection_title_container {
+    margin-top: 20px;
+  }
+}
+@media screen and (max-width: 540px) {
+  .image-collection {
+    gap: 20px;
+  }
+  .fan-image {
+    width: 120px;
+  }
+  .image-item {
     gap: 30px;
   }
 }
-
 @media screen and (max-width: 465px) {
   .image-item {
-    height: 323px;
+    height: 260px;
     margin-right: 5%;
     margin-left: 5%;
     width: 300px;

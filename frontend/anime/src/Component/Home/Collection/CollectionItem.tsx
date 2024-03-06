@@ -1,9 +1,18 @@
+import { useEffect, useState } from 'react';
 import './styles.scss';
+import React from 'react';
 type CollectionItemProps = {
   CollectionName: string;
   images: any;
 };
 const CollectionItem: React.FC<CollectionItemProps> = ({ CollectionName, images }) => {
+  const [image, setImage] = useState<string[]>([]);
+  useEffect(() => {
+    images.then((resultImages: string[]) => {
+      setImage(resultImages);
+    });
+  }, []);
+
   return (
     <>
       <div className="collection_title_container">
@@ -12,19 +21,19 @@ const CollectionItem: React.FC<CollectionItemProps> = ({ CollectionName, images 
       </div>
       <div className="fan-container">
         <img
-          src={images[0]}
+          src={image[0]}
           alt="Image 1"
           className="fan-image"
           style={{ transform: 'rotate(350deg)', zIndex: 1 }}
         />
         <img
-          src={images[1]}
+          src={image[1]}
           alt="Image 2"
           className="fan-image"
           style={{ transform: 'rotate(-2deg)', zIndex: 2, marginLeft: '-40px' }}
         />
         <img
-          src={images[2]}
+          src={image[2]}
           alt="Image 3"
           className="fan-image"
           style={{

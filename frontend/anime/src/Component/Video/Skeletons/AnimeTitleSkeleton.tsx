@@ -1,14 +1,15 @@
+import React from 'react';
 import ContentLoader, { IContentLoaderProps } from 'react-content-loader';
 import { useMediaQuery } from 'react-responsive';
 
 const AnimeTitleSkeleton = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => {
-  const isPhoneScreen = useMediaQuery({ query: '(max-width: 590px)' });
+  const isPhoneScreen = useMediaQuery({ query: '(max-width: 425px)' });
   return (
     <ContentLoader
       speed={1}
-      width={isPhoneScreen ? '100%' : 520}
-      height={isPhoneScreen ? '100%' : 384}
-      viewBox="0 0 340 84"
+      width={isPhoneScreen ? 300 : 420}
+      height={184}
+      viewBox="-50 -30 340 115"
       backgroundColor="#333333"
       foregroundColor="#a0a0a0"
       {...props}

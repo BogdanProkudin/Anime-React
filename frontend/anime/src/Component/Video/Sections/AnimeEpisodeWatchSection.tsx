@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAppSelector } from '../../../redux/hook';
 import EpisodeVideo from '../EpisodeVideo';
 import AnimeVideoSkeleton from '../Skeletons/AnimeVideoSkeleton';

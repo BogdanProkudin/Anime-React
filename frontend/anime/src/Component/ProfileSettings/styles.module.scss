@@ -8,6 +8,11 @@
   width: 300px;
   display: flex;
 }
+.profile_settings {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
 .profile_setting_variants_item {
   color: white;

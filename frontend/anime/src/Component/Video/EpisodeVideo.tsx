@@ -3,6 +3,7 @@ import styles from './styles.module.scss';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from '../../redux/hook';
 import AnimeVideoSkeleton from './Skeletons/AnimeVideoSkeleton';
+import YouTube from 'react-youtube';
 type EpisodeVideoProps = {
   animeLink?: string;
 };
@@ -23,23 +24,19 @@ const EpisodeVideo: React.FC<EpisodeVideoProps> = (animeLink) => {
 
   return (
     <div className={styles.anime_video_container}>
-      {animeLinkStatus !== 'pending' && AnimeInfo && !animeLink.animeLink?.includes('youtube') ? (
+      {animeLink.animeLink ? (
         <iframe
           ref={kodikPlayerRef.current && kodikPlayerRef}
           id="kodik-player"
           style={{ marginBottom: '4rem' }}
           className={styles.anime_video_screen}
-          src={`${animeLink.animeLink}`}
+          src={
+            'https://www.youtube.com/embed/' +
+            animeLink.animeLink +
+            '?showinfo=0&enablejsapi=1&origin=http://localhost:9000'
+          }
           frameBorder="0"
           allowFullScreen
-        ></iframe>
-      ) : animeLinkStatus !== 'pending' && AnimeInfo ? (
-        <iframe
-          width="610"
-          height="370"
-          style={{ marginBottom: '4rem' }}
-          src={`${animeLink.animeLink}`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         ></iframe>
       ) : (
         <AnimeVideoSkeleton />

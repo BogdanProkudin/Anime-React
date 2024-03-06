@@ -1,5 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import styles from './styles.module.scss';
+import React from 'react';
 type ProfileInfoInputProps = {
   setEmailInputValue: Dispatch<SetStateAction<string>>;
   setEmailSecondInputValue: Dispatch<SetStateAction<string>>;

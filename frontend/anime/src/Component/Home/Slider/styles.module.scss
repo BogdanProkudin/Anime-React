@@ -7,14 +7,12 @@
 .embla_slide_container {
   z-index: 1;
   cursor: pointer;
-  &:hover {
-    .embla__slide {
-      filter: blur(1px);
-    }
-    .slider_play_button {
-      display: block;
-    }
-  }
+}
+.slider_anime_container {
+  border: none;
+  background-color: transparent;
+  height: 300px;
+  width: 210px;
 }
 .slides_container {
   display: flex;
@@ -36,12 +34,16 @@
 }
 .embla__slide {
   flex: 0 0 var(--slide-size);
+  width: 210px;
+  height: 300px;
 
   padding-left: var(--slide-spacing);
   position: relative;
-  height: 300px;
-  filter: blur(0px);
-  &:hover {
+}
+
+.embla_image_shadow_container:has(.play_button:hover) {
+  .embla__slide__img {
+    filter: blur(3px);
   }
 }
 
@@ -54,6 +56,13 @@
   height: 300px;
   cursor: pointer;
   user-select: none;
+
+  animation: fadeIn 0.5s forwards;
+}
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 .embla__slide__number {
   width: 4.6rem;
@@ -120,14 +129,45 @@
   width: 65%;
   height: 65%;
 }
-.embla_image_shadow_container {
-  position: relative;
-  width: max-content;
-  border-radius: 30px;
-}
-.poster_shadow {
+
+.play_button {
+  color: white;
   position: absolute;
-  bottom: 0px;
+  width: 50px;
+  height: 50px;
+  top: 50%; /* Расположение по вертикали в середине */
+  left: 50%; /* Расположение по горизонтали в середине */
+  transform: translate(-50%, -50%); /* Центрирование элемента */
+  z-index: 999;
+  display: none;
+  cursor: pointer;
+  &:hover {
+    display: block;
+  }
+}
+.embla_image_shadow_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  position: relative;
+  width: 215px;
+  border-radius: 30px;
+  &:hover {
+    .play_button {
+      display: block;
+    }
+    .embla__slide__img {
+      filter: blur(3px);
+    }
+    .embla_image_shadow {
+      bottom: -0.3rem;
+    }
+  }
+}
+.embla_image_shadow {
+  position: absolute;
+  bottom: -0.2rem;
   cursor: pointer;
   border-radius: 30px;
   width: 100%;
@@ -138,9 +178,11 @@
 .slider_items_container {
   position: relative;
   bottom: 5rem;
+  width: max-content;
   z-index: 2;
   user-select: none;
   cursor: pointer;
+  text-align: left;
 }
 .slider_item_title {
   font-size: 17px;
@@ -152,17 +194,7 @@
   font-family: 'Roboto', sans-serif;
   border-radius: 5px;
 }
-.slider_play_button {
-  color: white;
-  width: 60px;
-  height: 60px;
-  position: absolute;
-  bottom: 7.5rem;
-  left: 35%;
-  z-index: 950;
-  user-select: none;
-  display: none;
-}
+
 .slider_item_subtext {
   font-size: 16px;
 
@@ -212,8 +244,42 @@
     border-radius: 6px;
     border: 3px solid #000000;
   }
-}
+  .embla__slide:has(.play_button:hover) {
+    .embla_image_shadow_container {
+      filter: blur(0);
+    }
+  }
+  .embla_image_shadow_container:has(.embla__slide__img) {
+    .play_button {
+      display: none;
+    }
+  }
+  .embla_image_shadow_container {
+    &:hover {
+      .embla__slide__img {
+        filter: blur(0);
+      }
+    }
+  }
+  .embla__slide__img {
+    display: block;
+    min-width: 210px;
+    max-width: 210px;
+    border-radius: 30px;
+    object-fit: cover;
+    height: 300px;
+    cursor: pointer;
+    opacity: 0;
+    user-select: none;
 
+    animation: fadeIn 0.5s forwards;
+  }
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+}
 @media screen and (max-width: 475px) {
   .slider_item_subtext {
     font-size: 12px;
@@ -227,13 +293,24 @@
     height: 251px;
     min-width: 0;
   }
+  .slider_anime_container {
+    width: 164px;
+    height: 251px;
+    min-width: 0;
+  }
+  .embla_image_shadow_container {
+    width: 164px;
+  }
   .embla__slide {
     height: 250px;
     width: 170px;
   }
   .slider_items_container {
-    bottom: 4.5rem;
+    bottom: 4rem;
     margin-left: 3%;
+  }
+  .embla {
+    --slide-spacing: 0.5rem;
   }
 }
 @media screen and (max-width: 400px) {
@@ -246,14 +323,22 @@
     height: 190px;
     width: 140px;
   }
+  .embla_image_shadow_container {
+    width: 134px;
+    border: 7px;
+  }
+  .slider_anime_container {
+    width: 134px;
+    height: 191px;
+  }
   .embla__slide__img {
     width: 134px;
     height: 191px;
     margin-top: 0.3rem;
     border-radius: 10px;
   }
-  .poster_shadow {
-    border-radius: 10px;
+  .embla_image_shadow {
+    border-radius: 7px;
   }
   .slider_item_title {
     font-size: 14px;

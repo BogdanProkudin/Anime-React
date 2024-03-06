@@ -1,50 +1,60 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useCallback } from 'react';
 import styles from './styles.module.scss';
 import axios from 'axios';
+
 type ProfileInfoButtonProps = {
   text: string;
-  setIsChangeUserName: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsChangeUserName: Dispatch<SetStateAction<boolean>>;
   CancelFunction: () => void;
   userNameInputValue: string;
   setErrorUserName: Dispatch<SetStateAction<string>>;
+  refetchUserInfo?: () => void; // Типизируем функцию обновления информации о пользователе
 };
+
 const ProfileInfoButton: React.FC<ProfileInfoButtonProps> = ({
   text,
   setIsChangeUserName,
   CancelFunction,
   userNameInputValue,
   setErrorUserName,
+  refetchUserInfo,
 }) => {
   const storedUserString = localStorage.getItem('CurrentUser');
+  const storedUser = storedUserString ? JSON.parse(storedUserString) : null;
 
-  const storedUser = storedUserString !== null ? JSON.parse(storedUserString) : 'NOT FOUND';
-
-  console.log(storedUser);
-
-  async function handleButtonClick() {
+  const handleButtonClick = useCallback(async () => {
     if (text === 'Cancel') {
       CancelFunction();
       setErrorUserName('');
-      return setIsChangeUserName(false);
+      setIsChangeUserName(false);
     } else {
-      console.log('here');
+      try {
+        const response = await axios.post('http://localhost:3003/ChangeUserName', {
+          userId: storedUser?._id,
+          newUserName: userNameInputValue,
+        });
 
-      const response = await axios.post('http://localhost:3003/ChangeUserName', {
-        UserName: storedUser.UserName,
-        newUserName: userNameInputValue,
-      });
-      console.log('Nick changed', response);
-
-      if (response.data.user) {
-        const NewUserString = JSON.stringify(response.data.user);
-        localStorage.setItem('CurrentUser', NewUserString);
-        setErrorUserName('');
-        setIsChangeUserName(false);
-      } else {
-        setErrorUserName(response.data.message);
+        if (response.data.user) {
+          refetchUserInfo?.(); // Вызываем функцию обновления информации о пользователе, если она передана
+          setErrorUserName('');
+          setIsChangeUserName(false);
+        } else {
+          setErrorUserName(response.data.message);
+        }
+      } catch (error) {
+        setErrorUserName('Failed to change username');
+        console.error('Error:', error);
       }
     }
-  }
+  }, [
+    text,
+    setIsChangeUserName,
+    CancelFunction,
+    userNameInputValue,
+    setErrorUserName,
+    storedUser,
+    refetchUserInfo,
+  ]);
 
   return (
     <button onClick={handleButtonClick} className={styles.profile_info_button}>

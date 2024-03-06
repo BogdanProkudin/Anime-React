@@ -1,6 +1,6 @@
 import styles from './styles.module.scss';
 import stylesLoader from '../Search/styles.module.scss';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import Autosuggest, { AutosuggestProps, SuggestionsFetchRequestedParams } from 'react-autosuggest';
 import HeaderSearchItem from './HeaderSearchItem';
 import { debounce, flatMap } from 'lodash';
@@ -9,6 +9,9 @@ import { getAnimeSearchSeriaThunk } from '../../../redux/slices/Anime';
 import { useNavigate } from 'react-router-dom';
 import { AnimeInfo } from '../../../types/Home';
 import { IoIosSearch } from 'react-icons/io';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import translate from 'google-translate-api';
 export interface Anime {
   title_english: string;
   images: { jpg: { image_url: string } };
@@ -30,21 +33,36 @@ const HeaderInputBigScreen: React.FC = () => {
   const [loading, setLoading] = useState(false); // Новое состояние для отслеживания загрузки
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+  const autosuggestRef = useRef<HTMLDivElement>(null);
   const [isSuggestionsOpen, setSuggestionsOpen] = useState(false);
 
   const [isButtonOpen, setIsButtonOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (autosuggestRef.current && !autosuggestRef.current.contains(event.target as Node)) {
+        setSuggestions([]);
+        console.log('CLICKED');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     setSuggestionsOpen(value.length > 0);
   }, [value]);
   const debouncedHandleInputChange = React.useCallback(
     debounce(async (Inputvalue: string) => {
       setLoading(true);
+
       if (Inputvalue.length > 3) {
         const response = await dispatch(getAnimeSearchSeriaThunk({ title: Inputvalue }));
 
         if (response.payload.length > 0) {
-          setSuggestions(response.payload.slice(0, 5));
+          setSuggestions(response.payload.slice(0, 5).reverse());
           if (response.payload.length > 5) {
             setIsButtonOpen(true);
           }
@@ -102,7 +120,7 @@ const HeaderInputBigScreen: React.FC = () => {
   };
 
   return (
-    <div className={styles.autosuggest_container}>
+    <div ref={autosuggestRef} className={styles.autosuggest_container}>
       <Autosuggest
         suggestions={suggestions as Anime[]}
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}

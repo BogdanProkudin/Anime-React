@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import { BiPencil } from 'react-icons/bi';
 import ProfileInfoButton from './ProfileUserNameButton';
 import ProfileInfoInput from './ProfileUserNameInput';
 import { useMediaQuery } from 'react-responsive';
-
-const ProfileUserNameInfo = () => {
+import { io } from 'socket.io-client';
+type ProfileUserNameInfoProps = {
+  userName: string | undefined;
+  refetchUserInfo: any;
+};
+const ProfileUserNameInfo: React.FC<ProfileUserNameInfoProps> = ({ userName, refetchUserInfo }) => {
   const [isChangeUserName, setIsChangeUserName] = useState(false);
   const [userNameFirstInputValue, setUserNameFirstInputValue] = useState('');
   const [ErrorUserName, setErrorUserName] = useState<string>('');
   const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
-  console.log('first', userNameFirstInputValue);
+
   function CancelButton() {
     setUserNameFirstInputValue('');
   }
-  const storedUserString = localStorage.getItem('CurrentUser');
-  const storedUser = storedUserString !== null ? JSON.parse(storedUserString) : 'NOT FOUND';
-  console.log(storedUser);
 
   return (
     <div style={{ marginTop: '50px' }} className={styles.profile_info_container}>
@@ -40,7 +41,7 @@ const ProfileUserNameInfo = () => {
         </div>
         {!isChangeUserName ? (
           <div className={styles.profile_info_user_change}>
-            <p className={styles.profile_info_user_text}>{storedUser.UserName}</p>
+            <p className={styles.profile_info_user_text}>{userName}</p>
             <BiPencil
               onClick={() => setIsChangeUserName(true)}
               className={styles.pensil_svg}
@@ -57,7 +58,7 @@ const ProfileUserNameInfo = () => {
               setUserNameInputValue={setUserNameFirstInputValue}
             />
             {ErrorUserName.length > 0 && (
-              <span style={{ color: 'red', fontSize: '12px', marginLeft: '12px', width: '150px' }}>
+              <span style={{ color: 'red', fontSize: '12px', marginLeft: '12px', width: '180px' }}>
                 {ErrorUserName}
               </span>
             )}
@@ -68,6 +69,7 @@ const ProfileUserNameInfo = () => {
                 text="Save"
                 setIsChangeUserName={setIsChangeUserName}
                 setErrorUserName={setErrorUserName}
+                refetchUserInfo={refetchUserInfo}
               />
               <ProfileInfoButton
                 userNameInputValue={userNameFirstInputValue}

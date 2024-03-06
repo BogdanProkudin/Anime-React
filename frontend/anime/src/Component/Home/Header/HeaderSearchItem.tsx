@@ -2,6 +2,7 @@ import { useMediaQuery } from 'react-responsive';
 
 import styles from './styles.module.scss';
 import { useAppSelector } from '../../../redux/hook';
+import React from 'react';
 interface HeaderSearchItemProps {
   suggestion: any;
 }
